@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Heart, Briefcase, Activity, Sparkles, MessageCircle } from 'lucide-react';
-
+import { Heart, Briefcase, Activity, Sparkles } from 'lucide-react';
 interface CombinedScoresCardProps {
   lovePercentage: number;
   loveText: string;
@@ -185,7 +184,7 @@ export function CombinedScoresCard({
       </div>
 
       {/* Three Score Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <ScoreCard
           icon={<Heart className="w-6 h-6 sm:w-7 sm:h-7 text-love" fill="currentColor" />}
           label="Love"
@@ -218,39 +217,6 @@ export function CombinedScoresCard({
         />
       </div>
 
-      {/* Talk to Astrologer CTA */}
-      <motion.div
-        className="relative overflow-hidden rounded-2xl p-4 sm:p-5"
-        style={{
-          background: 'linear-gradient(135deg, #8b5cf6, #a855f7, #c084fc)',
-        }}
-        whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.2 }}
-      >
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white/10 -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-white/10 translate-y-1/2 -translate-x-1/2" />
-        
-        <div className="relative z-10 flex items-center justify-between gap-4">
-          <div className="flex-1">
-            <h4 className="font-sans font-bold text-white text-base sm:text-lg mb-1">
-              Need Personalized Guidance?
-            </h4>
-            <p className="text-white/80 text-xs sm:text-sm">
-              Get detailed insights from our expert astrologers
-            </p>
-          </div>
-          
-          <motion.button
-            className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-white text-purple-600 font-bold text-sm sm:text-base shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="whitespace-nowrap">Talk to Astrologer</span>
-          </motion.button>
-        </div>
-      </motion.div>
     </motion.div>
   );
 }
