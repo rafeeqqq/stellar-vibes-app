@@ -42,8 +42,9 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
   return (
     <motion.button
       onClick={onClick}
-      className="flex flex-col items-center gap-1.5 sm:gap-2 min-w-[64px] sm:min-w-[80px] touch-manipulation"
-      whileTap={{ scale: 0.92 }}
+      className="flex flex-col items-center gap-1.5 sm:gap-2 min-w-[68px] sm:min-w-[80px] touch-manipulation select-none"
+      whileTap={{ scale: 0.9 }}
+      style={{ WebkitTapHighlightColor: 'transparent' }}
     >
       <motion.div
         className={`relative w-14 h-14 sm:w-[72px] sm:h-[72px] rounded-full flex items-center justify-center transition-all duration-300 ${
