@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Heart, Briefcase, Activity, Star } from 'lucide-react';
+import { Heart, Briefcase, Activity } from 'lucide-react';
 
 interface CombinedScoresCardProps {
   lovePercentage: number;
@@ -58,12 +58,12 @@ function ScoreItem({
       <div className={`mt-3 pt-3 border-t border-border/50`}>
         <p className={`text-xs sm:text-sm font-medium ${accentColor}`}>
           {percentage >= 80 
-            ? `✨ Excellent energy for ${label.toLowerCase()} matters today!`
+            ? `Excellent energy for ${label.toLowerCase()} matters today!`
             : percentage >= 60 
-            ? `💫 Good prospects ahead. Stay positive and proactive.`
+            ? `Good prospects ahead. Stay positive and proactive.`
             : percentage >= 40
-            ? `🌱 Room for growth. Focus on small, meaningful steps.`
-            : `🧘 Take it easy. Self-reflection brings clarity.`
+            ? `Room for growth. Focus on small, meaningful steps.`
+            : `Take it easy. Self-reflection brings clarity.`
           }
         </p>
       </div>
@@ -88,8 +88,7 @@ export function CombinedScoresCard({
     >
       {/* Section Header */}
       <div className="flex items-center gap-2 mb-4 px-1">
-        <Star className="w-5 h-5 text-primary" fill="currentColor" />
-        <h3 className="font-serif text-xl sm:text-2xl font-semibold text-gradient">
+        <h3 className="font-sans text-lg sm:text-xl font-bold text-foreground">
           Daily Insights
         </h3>
       </div>
