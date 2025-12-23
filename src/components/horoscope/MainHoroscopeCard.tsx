@@ -48,6 +48,7 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
       {/* Sign Name */}
       <div className="text-center mb-4 sm:mb-6">
         <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-gradient">{sign.name}</h2>
+        <p className="font-hindi text-lg sm:text-xl text-primary/80 mt-0.5">{sign.hindiName} राशि</p>
         <p className="text-muted-foreground text-xs sm:text-sm mt-0.5 sm:mt-1">{sign.dateRange}</p>
       </div>
 

@@ -30,7 +30,7 @@ export function ActionButtons() {
           whileTap={{ scale: 0.97 }}
         >
           <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 text-primary" />
-          <span className="text-sm sm:text-base truncate">Chat</span>
+          <span className="text-sm sm:text-base truncate">ज्योतिषी से चैट करें</span>
         </motion.button>
 
         <motion.button
@@ -40,7 +40,7 @@ export function ActionButtons() {
           whileTap={{ scale: 0.97 }}
         >
           <Phone className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-          <span className="text-sm sm:text-base truncate">Call Astrologer</span>
+          <span className="text-sm sm:text-base truncate">Call करें</span>
         </motion.button>
       </div>
     </motion.div>

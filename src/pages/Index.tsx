@@ -7,6 +7,7 @@ import { DetailCard } from '@/components/horoscope/DetailCard';
 import { HealthCard } from '@/components/horoscope/HealthCard';
 import { AffirmationCard } from '@/components/horoscope/AffirmationCard';
 import { InsightsCard } from '@/components/horoscope/InsightsCard';
+import { PanchangCard } from '@/components/horoscope/PanchangCard';
 import { ActionButtons } from '@/components/horoscope/ActionButtons';
 import { StarField } from '@/components/horoscope/StarField';
 import { zodiacSigns, getHoroscopeData } from '@/lib/horoscopeData';
@@ -27,19 +28,21 @@ const Index = () => {
       
       {/* Header */}
       <motion.header 
-        className="pt-6 sm:pt-8 pb-3 sm:pb-4 px-4 text-center relative z-10"
+        className="pt-5 sm:pt-6 pb-2 sm:pb-3 px-4 text-center relative z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
+        <div className="flex items-center justify-center mb-1">
           <img 
             src={astrolokalLogo} 
             alt="AstroLokal" 
-            className="h-10 sm:h-12 w-auto"
+            className="h-9 sm:h-11 w-auto"
           />
         </div>
-        <p className="text-muted-foreground text-xs sm:text-sm">Discover your cosmic guidance</p>
+        <p className="text-muted-foreground text-xs sm:text-sm">
+          आपका दैनिक राशिफल <span className="mx-1">•</span> Your Daily Horoscope
+        </p>
       </motion.header>
 
       {/* Sign Picker */}
@@ -66,9 +69,15 @@ const Index = () => {
           {/* Main Horoscope Card */}
           <MainHoroscopeCard sign={sign} horoscope={horoscope} />
 
+          {/* Panchang Card */}
+          <PanchangCard 
+            sign={sign}
+            nakshatra={horoscope.nakshatra}
+            tithi={horoscope.tithi}
+          />
+
           {/* Daily Affirmation */}
           <AffirmationCard affirmation={horoscope.dailyAffirmation} />
-
           {/* Insights Card */}
           <InsightsCard 
             sign={sign}

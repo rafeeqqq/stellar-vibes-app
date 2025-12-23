@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'serif'],
-        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        serif: ['"Playfair Display"', 'serif'],
+        sans: ['"Poppins"', 'sans-serif'],
+        hindi: ['"Noto Serif Devanagari"', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
