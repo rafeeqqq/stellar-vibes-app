@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Heart, Briefcase, Activity, Sparkles } from 'lucide-react';
+import { Heart, Briefcase, Activity, Star } from 'lucide-react';
+
 interface CombinedScoresCardProps {
   lovePercentage: number;
   loveText: string;
@@ -9,154 +10,58 @@ interface CombinedScoresCardProps {
   healthText: string;
 }
 
-interface ScoreCardProps {
+interface ScoreItemProps {
   icon: React.ReactNode;
   label: string;
   percentage: number;
   text: string;
-  gradientFrom: string;
-  gradientTo: string;
-  glowColor: string;
-  tagline: string;
+  bgColor: string;
+  borderColor: string;
+  iconColor: string;
 }
 
-function ScoreCard({
+function ScoreItem({
   icon,
   label,
   percentage,
   text,
-  gradientFrom,
-  gradientTo,
-  glowColor,
-  tagline,
-}: ScoreCardProps) {
-  const circumference = 2 * Math.PI * 54;
-  const strokeDashoffset = circumference - (percentage / 100) * circumference;
-  const isHighScore = percentage >= 75;
-
+  bgColor,
+  borderColor,
+  iconColor,
+}: ScoreItemProps) {
   return (
     <motion.div
-      className="flex flex-col items-center p-4 rounded-2xl relative overflow-hidden"
+      className="rounded-2xl p-4 sm:p-5 border"
       style={{
-        background: `linear-gradient(135deg, ${gradientFrom}15, ${gradientTo}08)`,
+        background: bgColor,
+        borderColor: borderColor,
       }}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      {/* Glow effect for high scores */}
-      {isHighScore && (
-        <motion.div
-          className="absolute inset-0 opacity-30"
-          style={{
-            background: `radial-gradient(circle at center, ${glowColor}, transparent 70%)`,
-          }}
-          animate={{ opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-      )}
-
-      {/* Circular Progress */}
-      <div className="relative w-28 h-28 sm:w-32 sm:h-32 mb-3">
-        {/* Background circle */}
-        <svg className="w-full h-full transform -rotate-90">
-          <circle
-            cx="50%"
-            cy="50%"
-            r="42%"
-            stroke="currentColor"
-            strokeWidth="8"
-            fill="none"
-            className="text-muted/20"
-          />
-          {/* Progress circle with gradient */}
-          <defs>
-            <linearGradient id={`gradient-${label}`} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor={gradientFrom} />
-              <stop offset="100%" stopColor={gradientTo} />
-            </linearGradient>
-          </defs>
-          <motion.circle
-            cx="50%"
-            cy="50%"
-            r="42%"
-            stroke={`url(#gradient-${label})`}
-            strokeWidth="8"
-            fill="none"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            initial={{ strokeDashoffset: circumference }}
-            animate={{ strokeDashoffset }}
-            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            style={{ filter: `drop-shadow(0 0 8px ${glowColor})` }}
-          />
-        </svg>
-
-        {/* Center content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <div className="mb-1">{icon}</div>
-          <motion.span
-            className="text-2xl sm:text-3xl font-bold"
-            style={{ color: gradientFrom }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            {percentage}%
-          </motion.span>
+      {/* Header row */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div style={{ color: iconColor }}>{icon}</div>
+          <h4 className="font-sans font-semibold text-lg sm:text-xl text-foreground">
+            {label}
+          </h4>
         </div>
-
-        {/* Sparkle effect for high scores */}
-        {isHighScore && (
-          <motion.div
-            className="absolute -top-1 -right-1"
-            animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
-            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: gradientFrom }} />
-          </motion.div>
-        )}
+        <span 
+          className="font-bold text-lg sm:text-xl"
+          style={{ color: iconColor }}
+        >
+          {percentage}%
+        </span>
       </div>
 
-      {/* Label */}
-      <h4 className="font-sans font-bold text-base sm:text-lg text-foreground mb-1">{label}</h4>
-      
-      {/* Tagline */}
-      <p className="text-xs sm:text-sm text-center font-medium mb-3" style={{ color: gradientFrom }}>
-        {tagline}
-      </p>
-
-      {/* Detailed text */}
-      <div
-        className="w-full p-3 rounded-xl text-xs sm:text-sm text-foreground/80 leading-relaxed"
-        style={{
-          background: `linear-gradient(135deg, ${gradientFrom}10, ${gradientTo}05)`,
-          borderLeft: `3px solid ${gradientFrom}`,
-        }}
-      >
+      {/* Description text */}
+      <p className="text-sm sm:text-base text-foreground/80 leading-relaxed">
         {text}
-      </div>
+      </p>
     </motion.div>
   );
-}
-
-function getTagline(category: string, percentage: number): string {
-  if (category === 'love') {
-    if (percentage >= 80) return "💕 Love is in the air!";
-    if (percentage >= 60) return "💖 Good vibes today";
-    if (percentage >= 40) return "💗 Steady connections";
-    return "💜 Focus on self-love";
-  }
-  if (category === 'career') {
-    if (percentage >= 80) return "🚀 Sky's the limit!";
-    if (percentage >= 60) return "📈 Momentum building";
-    if (percentage >= 40) return "💼 Stay focused";
-    return "🎯 Plan strategically";
-  }
-  if (percentage >= 80) return "⚡ Peak energy!";
-  if (percentage >= 60) return "🌟 Feeling good";
-  if (percentage >= 40) return "🌿 Balance is key";
-  return "🧘 Rest and recover";
 }
 
 export function CombinedScoresCard({
@@ -169,54 +74,49 @@ export function CombinedScoresCard({
 }: CombinedScoresCardProps) {
   return (
     <motion.div
-      className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl p-4 sm:p-6 bg-white/90 backdrop-blur-sm border border-primary/10 shadow-lg"
+      className="mx-3 sm:mx-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.35 }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-center gap-2 mb-6">
-        <Sparkles className="w-5 h-5 text-primary" />
-        <h3 className="font-sans text-lg sm:text-xl font-bold bg-gradient-to-r from-love-dark via-career-dark to-emerald-600 bg-clip-text text-transparent">
-          Daily Scores
+      {/* Section Header */}
+      <div className="flex items-center gap-2 mb-4 px-1">
+        <Star className="w-5 h-5 text-amber-500" fill="currentColor" />
+        <h3 className="font-sans text-xl sm:text-2xl font-bold text-foreground">
+          Daily Insights
         </h3>
-        <Sparkles className="w-5 h-5 text-primary" />
       </div>
 
-      {/* Three Score Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <ScoreCard
-          icon={<Heart className="w-6 h-6 sm:w-7 sm:h-7 text-love" fill="currentColor" />}
+      {/* Score Cards */}
+      <div className="space-y-3">
+        <ScoreItem
+          icon={<Heart className="w-6 h-6" fill="currentColor" />}
           label="Love"
           percentage={lovePercentage}
           text={loveText}
-          gradientFrom="#ec4899"
-          gradientTo="#f472b6"
-          glowColor="rgba(236, 72, 153, 0.4)"
-          tagline={getTagline('love', lovePercentage)}
+          bgColor="linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%)"
+          borderColor="#FECACA"
+          iconColor="#DC2626"
         />
-        <ScoreCard
-          icon={<Briefcase className="w-6 h-6 sm:w-7 sm:h-7 text-career" />}
+        <ScoreItem
+          icon={<Briefcase className="w-6 h-6" />}
           label="Career"
           percentage={careerPercentage}
           text={careerText}
-          gradientFrom="#3b82f6"
-          gradientTo="#60a5fa"
-          glowColor="rgba(59, 130, 246, 0.4)"
-          tagline={getTagline('career', careerPercentage)}
+          bgColor="linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)"
+          borderColor="#FDE68A"
+          iconColor="#D97706"
         />
-        <ScoreCard
-          icon={<Activity className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-500" />}
+        <ScoreItem
+          icon={<Activity className="w-6 h-6" />}
           label="Health"
           percentage={healthPercentage}
           text={healthText}
-          gradientFrom="#10b981"
-          gradientTo="#34d399"
-          glowColor="rgba(16, 185, 129, 0.4)"
-          tagline={getTagline('health', healthPercentage)}
+          bgColor="linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%)"
+          borderColor="#A7F3D0"
+          iconColor="#059669"
         />
       </div>
-
     </motion.div>
   );
 }
