@@ -10,71 +10,77 @@ interface DetailCardProps {
 export function DetailCard({ type, percentage, text }: DetailCardProps) {
   const isLove = type === 'love';
   
+  const config = {
+    love: {
+      icon: Heart,
+      title: 'Love',
+      bgGradient: 'from-rose-500/10 to-pink-500/10',
+      iconBg: 'bg-rose-500/20',
+      iconColor: 'text-rose-500',
+      progressBg: 'bg-rose-500/20',
+      progressFill: 'from-rose-500 to-pink-400',
+      textColor: 'text-rose-600 dark:text-rose-400',
+      subtextColor: 'text-rose-700/70 dark:text-rose-300/70',
+      fill: true,
+    },
+    career: {
+      icon: Briefcase,
+      title: 'Career',
+      bgGradient: 'from-amber-500/10 to-orange-500/10',
+      iconBg: 'bg-amber-500/20',
+      iconColor: 'text-amber-500',
+      progressBg: 'bg-amber-500/20',
+      progressFill: 'from-amber-500 to-orange-400',
+      textColor: 'text-amber-600 dark:text-amber-400',
+      subtextColor: 'text-amber-700/70 dark:text-amber-300/70',
+      fill: false,
+    },
+  };
+
+  const c = config[type];
+  const Icon = c.icon;
+  
   return (
     <motion.div
-      className={`mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-lg ${isLove ? 'bg-love-gradient' : 'bg-career-gradient'}`}
-      initial={{ opacity: 0, x: isLove ? -30 : 30 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4, delay: isLove ? 0.1 : 0.2 }}
+      className={`mx-3 sm:mx-4 rounded-2xl p-4 bg-gradient-to-br ${c.bgGradient} border border-white/10 dark:border-white/5`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: isLove ? 0.1 : 0.15 }}
     >
-      <div className="flex items-start gap-3 sm:gap-4">
-        {/* Icon */}
-        <div 
-          className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0 ${
-            isLove ? 'bg-love-accent/20' : 'bg-career-accent/20'
-          }`}
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${c.iconBg}`}>
+            <Icon className={`w-4 h-4 ${c.iconColor}`} fill={c.fill ? 'currentColor' : 'none'} />
+          </div>
+          <h3 className={`font-serif text-base font-semibold ${c.textColor}`}>
+            {c.title}
+          </h3>
+        </div>
+        <motion.div 
+          className={`text-2xl font-bold ${c.textColor}`}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', stiffness: 200, delay: 0.3 }}
         >
-          {isLove ? (
-            <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-love-accent" fill="currentColor" />
-          ) : (
-            <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 text-career-accent" />
-          )}
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-1.5 sm:mb-2">
-            <h3 className={`font-serif text-lg sm:text-xl font-semibold ${
-              isLove ? 'text-love-accent' : 'text-career-accent'
-            }`}>
-              {isLove ? 'Love' : 'Career'}
-            </h3>
-            <div className="flex items-center gap-1">
-              <motion.span 
-                className={`text-xl sm:text-2xl font-bold ${
-                  isLove ? 'text-love-accent' : 'text-career-accent'
-                }`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                key={percentage}
-              >
-                {percentage}%
-              </motion.span>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className={`h-1.5 sm:h-2 rounded-full mb-2 sm:mb-3 ${
-            isLove ? 'bg-love-accent/20' : 'bg-career-accent/20'
-          }`}>
-            <motion.div
-              className={`h-full rounded-full ${
-                isLove ? 'bg-love-accent' : 'bg-career-accent'
-              }`}
-              initial={{ width: 0 }}
-              animate={{ width: `${percentage}%` }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            />
-          </div>
-
-          {/* Text */}
-          <p className={`text-xs sm:text-sm leading-relaxed ${
-            isLove ? 'text-love-accent/80' : 'text-career-accent/80'
-          }`}>
-            {text}
-          </p>
-        </div>
+          {percentage}%
+        </motion.div>
       </div>
+
+      {/* Progress Bar */}
+      <div className={`h-2 rounded-full ${c.progressBg} mb-3 overflow-hidden`}>
+        <motion.div
+          className={`h-full rounded-full bg-gradient-to-r ${c.progressFill}`}
+          initial={{ width: 0 }}
+          animate={{ width: `${percentage}%` }}
+          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+        />
+      </div>
+
+      {/* Text */}
+      <p className={`text-xs leading-relaxed ${c.subtextColor} line-clamp-2`}>
+        {text}
+      </p>
     </motion.div>
   );
 }
