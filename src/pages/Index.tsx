@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Moon, Stars } from 'lucide-react';
 import { SignPicker } from '@/components/horoscope/SignPicker';
 import { DayTabs } from '@/components/horoscope/DayTabs';
 import { MainHoroscopeCard } from '@/components/horoscope/MainHoroscopeCard';
@@ -11,6 +10,7 @@ import { InsightsCard } from '@/components/horoscope/InsightsCard';
 import { ActionButtons } from '@/components/horoscope/ActionButtons';
 import { StarField } from '@/components/horoscope/StarField';
 import { zodiacSigns, getHoroscopeData } from '@/lib/horoscopeData';
+import astrolokalLogo from '@/assets/astrolokal-logo.png';
 
 const Index = () => {
   const [selectedSign, setSelectedSign] = useState('leo');
@@ -33,9 +33,11 @@ const Index = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="flex items-center justify-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
-          <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-primary animate-pulse" />
-          <h1 className="font-serif text-xl sm:text-2xl md:text-3xl font-semibold text-gradient">Daily Horoscope</h1>
-          <Stars className="w-4 h-4 sm:w-5 sm:h-5 text-primary animate-pulse" />
+          <img 
+            src={astrolokalLogo} 
+            alt="AstroLokal" 
+            className="h-10 sm:h-12 w-auto"
+          />
         </div>
         <p className="text-muted-foreground text-xs sm:text-sm">Discover your cosmic guidance</p>
       </motion.header>

@@ -8,7 +8,7 @@ interface AffirmationCardProps {
 export function AffirmationCard({ affirmation }: AffirmationCardProps) {
   return (
     <motion.div
-      className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl p-4 sm:p-6 bg-gradient-to-br from-accent/20 via-primary/10 to-secondary/20 border border-border/30 shadow-lg relative overflow-hidden"
+      className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl p-4 sm:p-6 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/30 border border-primary/10 shadow-lg relative overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.25 }}
@@ -27,7 +27,7 @@ export function AffirmationCard({ affirmation }: AffirmationCardProps) {
           <h3 className="font-serif text-lg sm:text-xl font-semibold text-primary mb-2">
             Daily Affirmation
           </h3>
-          <p className="text-sm sm:text-base text-foreground/90 leading-relaxed italic">
+          <p className="text-sm sm:text-base text-foreground/80 leading-relaxed italic">
             "{affirmation}"
           </p>
         </div>

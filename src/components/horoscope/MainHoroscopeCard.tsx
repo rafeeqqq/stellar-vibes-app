@@ -10,7 +10,7 @@ interface MainHoroscopeCardProps {
 export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
   return (
     <motion.div
-      className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl bg-card-gradient border border-border/30 p-4 sm:p-6 overflow-hidden relative shadow-xl"
+      className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl bg-white/90 backdrop-blur-sm border border-primary/10 p-4 sm:p-6 overflow-hidden relative shadow-xl"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
@@ -18,8 +18,8 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
     >
       {/* Decorative glow */}
       <div 
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-48 sm:w-64 h-48 sm:h-64 rounded-full opacity-30 blur-3xl pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${sign.color}50 0%, transparent 70%)` }}
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-48 sm:w-64 h-48 sm:h-64 rounded-full opacity-20 blur-3xl pointer-events-none"
+        style={{ background: `radial-gradient(circle, ${sign.color}60 0%, transparent 70%)` }}
       />
       
       {/* Zodiac Symbol Circle */}
@@ -32,15 +32,15 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
         <div 
           className="absolute inset-0 rounded-full animate-pulse-glow"
           style={{ 
-            background: `conic-gradient(from 0deg, ${sign.color}40, transparent, ${sign.color}40)`,
+            background: `conic-gradient(from 0deg, ${sign.color}30, transparent, ${sign.color}30)`,
             filter: 'blur(8px)'
           }}
         />
         <div 
           className="absolute inset-1.5 sm:inset-2 rounded-full border-2"
-          style={{ borderColor: `${sign.color}60` }}
+          style={{ borderColor: `${sign.color}50` }}
         />
-        <div className="absolute inset-3 sm:inset-4 rounded-full bg-card/80 backdrop-blur flex items-center justify-center">
+        <div className="absolute inset-3 sm:inset-4 rounded-full bg-white/80 backdrop-blur flex items-center justify-center">
           <span className="text-4xl sm:text-5xl">{sign.symbol}</span>
         </div>
       </motion.div>
@@ -55,7 +55,7 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
       <div className="grid grid-cols-2 gap-2 sm:gap-4">
         {/* Mood */}
         <motion.div 
-          className="bg-muted/30 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center backdrop-blur-sm border border-border/20"
+          className="bg-secondary/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center backdrop-blur-sm border border-primary/10"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -66,7 +66,7 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
 
         {/* Lucky Number */}
         <motion.div 
-          className="bg-muted/30 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center backdrop-blur-sm border border-border/20"
+          className="bg-secondary/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center backdrop-blur-sm border border-primary/10"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -76,7 +76,7 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
 
         {/* Lucky Time */}
         <motion.div 
-          className="bg-muted/30 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center backdrop-blur-sm border border-border/20"
+          className="bg-secondary/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center backdrop-blur-sm border border-primary/10"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -87,7 +87,7 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
 
         {/* Lucky Colors */}
         <motion.div 
-          className="bg-muted/30 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center backdrop-blur-sm border border-border/20"
+          className="bg-secondary/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center backdrop-blur-sm border border-primary/10"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -95,7 +95,7 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
             {horoscope.luckyColors.map((color, i) => (
               <motion.div
                 key={i}
-                className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-foreground/20 shadow-sm"
+                className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-white shadow-sm"
                 style={{ backgroundColor: color }}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}

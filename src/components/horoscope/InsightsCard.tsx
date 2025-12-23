@@ -27,7 +27,7 @@ const elementColors: Record<string, string> = {
 export function InsightsCard({ sign, compatibleSign, avoidSign, focusArea, focusEmoji }: InsightsCardProps) {
   return (
     <motion.div
-      className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-card-gradient border border-border/30 shadow-lg"
+      className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-white/90 backdrop-blur-sm border border-primary/10 shadow-lg"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.3 }}
@@ -55,11 +55,11 @@ export function InsightsCard({ sign, compatibleSign, avoidSign, focusArea, focus
 
         {/* Today's Focus */}
         <motion.div 
-          className="rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-muted/30 border border-border/20 backdrop-blur-sm"
+          className="rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-secondary/50 border border-primary/10 backdrop-blur-sm"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 text-foreground/80">
+          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 text-foreground/70">
             <Target className="w-4 h-4" />
             <span className="text-[10px] sm:text-xs uppercase tracking-wide">Focus</span>
           </div>
@@ -71,11 +71,11 @@ export function InsightsCard({ sign, compatibleSign, avoidSign, focusArea, focus
 
         {/* Compatible Sign */}
         <motion.div 
-          className="rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-muted/30 border border-border/20 backdrop-blur-sm"
+          className="rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-secondary/50 border border-primary/10 backdrop-blur-sm"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 text-green-400/80">
+          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 text-green-600">
             <Users className="w-4 h-4" />
             <span className="text-[10px] sm:text-xs uppercase tracking-wide">Best Match</span>
           </div>
@@ -84,11 +84,11 @@ export function InsightsCard({ sign, compatibleSign, avoidSign, focusArea, focus
 
         {/* Avoid Sign */}
         <motion.div 
-          className="rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-muted/30 border border-border/20 backdrop-blur-sm"
+          className="rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-secondary/50 border border-primary/10 backdrop-blur-sm"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 text-orange-400/80">
+          <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2 text-orange-600">
             <AlertCircle className="w-4 h-4" />
             <span className="text-[10px] sm:text-xs uppercase tracking-wide">Caution</span>
           </div>
