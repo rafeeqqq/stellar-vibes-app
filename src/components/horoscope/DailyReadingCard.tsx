@@ -41,39 +41,61 @@ export function DailyReadingCard({
         </p>
       </div>
 
-      {/* Two column grid for Do's & Don'ts */}
+      {/* Two column grid for Do's & Don'ts with staggered animations */}
       <div className="grid grid-cols-2 gap-3 mb-4">
         {/* Do's */}
-        <div className="rounded-xl p-3 bg-emerald-500/10 border border-emerald-500/20">
+        <motion.div 
+          className="rounded-xl p-3 bg-emerald-500/10 border border-emerald-500/20"
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+        >
           <div className="flex items-center gap-1.5 mb-2">
             <ThumbsUp className="w-4 h-4 text-emerald-600" />
             <span className="text-xs sm:text-sm font-semibold text-emerald-700">Do's</span>
           </div>
           <ul className="space-y-1">
             {dos.map((item, index) => (
-              <li key={index} className="text-[10px] sm:text-xs text-foreground/70 flex items-start gap-1">
+              <motion.li 
+                key={index} 
+                className="text-[10px] sm:text-xs text-foreground/70 flex items-start gap-1"
+                initial={{ opacity: 0, x: -5 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + index * 0.1 }}
+              >
                 <span className="text-emerald-500 mt-0.5">✓</span>
                 <span>{item}</span>
-              </li>
+              </motion.li>
             ))}
           </ul>
-        </div>
+        </motion.div>
 
         {/* Don'ts */}
-        <div className="rounded-xl p-3 bg-rose-500/10 border border-rose-500/20">
+        <motion.div 
+          className="rounded-xl p-3 bg-rose-500/10 border border-rose-500/20"
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+        >
           <div className="flex items-center gap-1.5 mb-2">
             <ThumbsDown className="w-4 h-4 text-rose-600" />
             <span className="text-xs sm:text-sm font-semibold text-rose-700">Don'ts</span>
           </div>
           <ul className="space-y-1">
             {donts.map((item, index) => (
-              <li key={index} className="text-[10px] sm:text-xs text-foreground/70 flex items-start gap-1">
+              <motion.li 
+                key={index} 
+                className="text-[10px] sm:text-xs text-foreground/70 flex items-start gap-1"
+                initial={{ opacity: 0, x: 5 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + index * 0.1 }}
+              >
                 <span className="text-rose-500 mt-0.5">✗</span>
                 <span>{item}</span>
-              </li>
+              </motion.li>
             ))}
           </ul>
-        </div>
+        </motion.div>
       </div>
 
       {/* Shubh Muhurat & Remedy Row */}
@@ -95,21 +117,36 @@ export function DailyReadingCard({
         </div>
       </div>
 
-      {/* Mantra Section */}
-      <div
-        className="rounded-xl p-3 sm:p-4 text-center border"
+      {/* Mantra Section with animated gradient */}
+      <motion.div
+        className="rounded-xl p-3 sm:p-4 text-center border relative overflow-hidden animate-gradient"
         style={{
-          background: `linear-gradient(135deg, ${sign.color}15, ${sign.color}05)`,
-          borderColor: `${sign.color}30`,
+          background: `linear-gradient(135deg, ${sign.color}20, ${sign.color}08, ${sign.color}15, ${sign.color}05)`,
+          backgroundSize: '200% 200%',
+          borderColor: `${sign.color}40`,
         }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
       >
-        <p className="text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground mb-1">
-          Mantra of the Day
+        <motion.div
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          animate={{
+            background: [
+              `radial-gradient(circle at 20% 50%, ${sign.color}30, transparent 50%)`,
+              `radial-gradient(circle at 80% 50%, ${sign.color}30, transparent 50%)`,
+              `radial-gradient(circle at 20% 50%, ${sign.color}30, transparent 50%)`,
+            ],
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <p className="text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground mb-1 relative z-10">
+          ✨ Mantra of the Day ✨
         </p>
-        <p className="font-hindi text-base sm:text-lg font-medium text-foreground">
+        <p className="font-hindi text-base sm:text-lg font-medium text-foreground relative z-10">
           {mantra}
         </p>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }

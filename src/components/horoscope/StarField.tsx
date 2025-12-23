@@ -3,13 +3,14 @@ import { useMemo } from 'react';
 
 export function StarField() {
   const particles = useMemo(() => {
-    return Array.from({ length: 20 }, (_, i) => ({
+    return Array.from({ length: 30 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 4 + 2,
-      delay: Math.random() * 2,
-      duration: Math.random() * 3 + 3,
+      size: Math.random() * 5 + 2,
+      delay: Math.random() * 3,
+      duration: Math.random() * 4 + 4,
+      floatDistance: Math.random() * 20 + 10,
     }));
   }, []);
 
@@ -30,9 +31,10 @@ export function StarField() {
             height: particle.size,
           }}
           animate={{
-            opacity: [0.1, 0.4, 0.1],
-            scale: [1, 1.2, 1],
-            y: [0, -10, 0],
+            opacity: [0.15, 0.5, 0.15],
+            scale: [1, 1.3, 1],
+            y: [0, -particle.floatDistance, 0],
+            x: [0, particle.floatDistance * 0.3, 0],
           }}
           transition={{
             duration: particle.duration,

@@ -49,7 +49,7 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
       <motion.div
         className={`relative w-14 h-14 sm:w-[72px] sm:h-[72px] rounded-full flex items-center justify-center transition-all duration-300 ${
           isSelected 
-            ? 'ring-[3px] ring-primary shadow-lg' 
+            ? 'ring-[3px] ring-primary shadow-lg animate-breathe' 
             : 'ring-2 ring-border hover:ring-primary/50'
         }`}
         animate={{
@@ -64,12 +64,20 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
         {/* Golden glow for selected */}
         {isSelected && (
           <motion.div
-            className="absolute -inset-1 rounded-full pointer-events-none"
+            className="absolute -inset-2 rounded-full pointer-events-none"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ 
+              opacity: [0.5, 0.8, 0.5],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
             style={{
-              background: `radial-gradient(circle, hsl(20 80% 55% / 0.3) 0%, transparent 70%)`,
-              filter: 'blur(8px)',
+              background: `radial-gradient(circle, hsl(20 80% 55% / 0.35) 0%, transparent 70%)`,
+              filter: 'blur(10px)',
             }}
           />
         )}
