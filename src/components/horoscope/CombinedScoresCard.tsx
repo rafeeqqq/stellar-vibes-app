@@ -88,7 +88,7 @@ export function CombinedScoresCard({
     >
       {/* Section Header */}
       <div className="flex items-center gap-2 mb-4 px-1">
-        <h3 className="font-sans text-lg sm:text-xl font-bold text-foreground">
+        <h3 className="font-sans text-lg sm:text-xl font-bold text-gradient">
           Daily Insights
         </h3>
       </div>
