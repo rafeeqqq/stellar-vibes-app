@@ -48,16 +48,16 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
       <motion.div
         className={`relative w-14 h-14 sm:w-[72px] sm:h-[72px] rounded-full flex items-center justify-center transition-all duration-300 ${
           isSelected 
-            ? 'ring-[3px] ring-golden shadow-lg' 
-            : 'ring-2 ring-border/40 hover:ring-golden/50'
+            ? 'ring-[3px] ring-primary shadow-lg' 
+            : 'ring-2 ring-border hover:ring-primary/50'
         }`}
         animate={{
           scale: isSelected ? 1.08 : 1,
         }}
         style={{
           background: isSelected 
-            ? `linear-gradient(135deg, hsl(45 100% 70% / 0.2), hsl(30 100% 75% / 0.1))`
-            : 'hsl(var(--muted) / 0.3)',
+            ? `linear-gradient(135deg, hsl(20 80% 55% / 0.15), hsl(35 95% 55% / 0.1))`
+            : 'white',
         }}
       >
         {/* Golden glow for selected */}
@@ -67,7 +67,7 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             style={{
-              background: `radial-gradient(circle, hsl(45 100% 70% / 0.4) 0%, transparent 70%)`,
+              background: `radial-gradient(circle, hsl(20 80% 55% / 0.3) 0%, transparent 70%)`,
               filter: 'blur(8px)',
             }}
           />
@@ -83,7 +83,7 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
       
       <span 
         className={`text-[11px] sm:text-xs font-medium transition-colors duration-300 ${
-          isSelected ? 'text-golden' : 'text-muted-foreground'
+          isSelected ? 'text-primary' : 'text-muted-foreground'
         }`}
       >
         {sign.name}

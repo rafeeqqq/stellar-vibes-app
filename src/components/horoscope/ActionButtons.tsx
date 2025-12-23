@@ -25,17 +25,17 @@ export function ActionButtons() {
       <div className="flex gap-2 sm:gap-3 max-w-md mx-auto">
         <motion.button
           onClick={handleChat}
-          className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl sm:rounded-2xl bg-muted/50 backdrop-blur-md border border-border/50 text-foreground font-medium transition-colors hover:bg-muted active:bg-muted touch-manipulation"
+          className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl sm:rounded-2xl bg-white/80 backdrop-blur-md border border-primary/20 text-foreground font-medium transition-colors hover:bg-white active:bg-white shadow-md touch-manipulation"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
         >
-          <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+          <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 text-primary" />
           <span className="text-sm sm:text-base truncate">Chat</span>
         </motion.button>
 
         <motion.button
           onClick={handleCall}
-          className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl sm:rounded-2xl bg-gradient-to-r from-primary to-golden text-primary-foreground font-semibold shadow-lg touch-manipulation"
+          className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-3.5 sm:py-4 px-3 sm:px-6 rounded-xl sm:rounded-2xl bg-gradient-to-r from-primary to-accent text-white font-semibold shadow-lg touch-manipulation"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
         >
