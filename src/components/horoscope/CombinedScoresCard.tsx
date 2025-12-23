@@ -15,9 +15,9 @@ interface ScoreItemProps {
   label: string;
   percentage: number;
   text: string;
-  bgColor: string;
-  borderColor: string;
-  iconColor: string;
+  bgClass: string;
+  borderClass: string;
+  accentColor: string;
 }
 
 function ScoreItem({
@@ -25,41 +25,48 @@ function ScoreItem({
   label,
   percentage,
   text,
-  bgColor,
-  borderColor,
-  iconColor,
+  bgClass,
+  borderClass,
+  accentColor,
 }: ScoreItemProps) {
   return (
     <motion.div
-      className="rounded-2xl p-4 sm:p-5 border"
-      style={{
-        background: bgColor,
-        borderColor: borderColor,
-      }}
+      className={`rounded-2xl p-4 sm:p-5 border ${bgClass} ${borderClass}`}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
       {/* Header row */}
       <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <div style={{ color: iconColor }}>{icon}</div>
+        <div className="flex items-center gap-2.5">
+          <div className={accentColor}>{icon}</div>
           <h4 className="font-sans font-semibold text-lg sm:text-xl text-foreground">
             {label}
           </h4>
         </div>
-        <span 
-          className="font-bold text-lg sm:text-xl"
-          style={{ color: iconColor }}
-        >
+        <span className={`font-bold text-lg sm:text-xl ${accentColor}`}>
           {percentage}%
         </span>
       </div>
 
-      {/* Description text */}
-      <p className="text-sm sm:text-base text-foreground/80 leading-relaxed">
+      {/* Description text - more prominent */}
+      <p className="text-sm sm:text-base text-foreground/85 leading-relaxed">
         {text}
       </p>
+
+      {/* Additional insight tip based on percentage */}
+      <div className={`mt-3 pt-3 border-t border-border/50`}>
+        <p className={`text-xs sm:text-sm font-medium ${accentColor}`}>
+          {percentage >= 80 
+            ? `✨ Excellent energy for ${label.toLowerCase()} matters today!`
+            : percentage >= 60 
+            ? `💫 Good prospects ahead. Stay positive and proactive.`
+            : percentage >= 40
+            ? `🌱 Room for growth. Focus on small, meaningful steps.`
+            : `🧘 Take it easy. Self-reflection brings clarity.`
+          }
+        </p>
+      </div>
     </motion.div>
   );
 }
@@ -81,8 +88,8 @@ export function CombinedScoresCard({
     >
       {/* Section Header */}
       <div className="flex items-center gap-2 mb-4 px-1">
-        <Star className="w-5 h-5 text-amber-500" fill="currentColor" />
-        <h3 className="font-sans text-xl sm:text-2xl font-bold text-foreground">
+        <Star className="w-5 h-5 text-primary" fill="currentColor" />
+        <h3 className="font-serif text-xl sm:text-2xl font-semibold text-gradient">
           Daily Insights
         </h3>
       </div>
@@ -90,31 +97,31 @@ export function CombinedScoresCard({
       {/* Score Cards */}
       <div className="space-y-3">
         <ScoreItem
-          icon={<Heart className="w-6 h-6" fill="currentColor" />}
+          icon={<Heart className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" />}
           label="Love"
           percentage={lovePercentage}
           text={loveText}
-          bgColor="linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%)"
-          borderColor="#FECACA"
-          iconColor="#DC2626"
+          bgClass="bg-love-gradient"
+          borderClass="border-love/30"
+          accentColor="text-love-dark"
         />
         <ScoreItem
-          icon={<Briefcase className="w-6 h-6" />}
+          icon={<Briefcase className="w-5 h-5 sm:w-6 sm:h-6" />}
           label="Career"
           percentage={careerPercentage}
           text={careerText}
-          bgColor="linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)"
-          borderColor="#FDE68A"
-          iconColor="#D97706"
+          bgClass="bg-career-gradient"
+          borderClass="border-career/30"
+          accentColor="text-career-dark"
         />
         <ScoreItem
-          icon={<Activity className="w-6 h-6" />}
+          icon={<Activity className="w-5 h-5 sm:w-6 sm:h-6" />}
           label="Health"
           percentage={healthPercentage}
           text={healthText}
-          bgColor="linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%)"
-          borderColor="#A7F3D0"
-          iconColor="#059669"
+          bgClass="bg-secondary"
+          borderClass="border-primary/20"
+          accentColor="text-primary"
         />
       </div>
     </motion.div>
