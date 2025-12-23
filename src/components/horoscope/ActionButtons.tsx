@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 export function ActionButtons() {
-  const handleOpenApp = () => {
+  const handleTalkToAstrologer = () => {
     window.location.href = 'astrolokal://HomeScreen';
   };
 
@@ -15,13 +15,13 @@ export function ActionButtons() {
     >
       <div className="max-w-md mx-auto">
         <motion.button
-          onClick={handleOpenApp}
-          className="w-full flex items-center justify-center gap-2 py-4 sm:py-5 px-6 rounded-xl sm:rounded-2xl bg-gradient-to-r from-primary to-accent text-white font-semibold shadow-lg touch-manipulation text-base sm:text-lg"
+          onClick={handleTalkToAstrologer}
+          className="w-full flex items-center justify-center gap-2 py-4 sm:py-5 px-6 rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-600 via-purple-500 to-violet-500 text-white font-bold shadow-lg touch-manipulation text-base sm:text-lg"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
         >
-          <ExternalLink className="w-5 h-5 sm:w-6 sm:h-6" />
-          <span>Open App</span>
+          <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+          <span>Talk to Astrologer</span>
         </motion.button>
       </div>
     </motion.div>
