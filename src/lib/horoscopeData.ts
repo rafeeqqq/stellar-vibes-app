@@ -5,6 +5,8 @@ export interface ZodiacSign {
   dateRange: string;
   element: 'Fire' | 'Earth' | 'Air' | 'Water';
   color: string;
+  rulingPlanet: string;
+  planetSymbol: string;
 }
 
 export interface HoroscopeData {
@@ -17,22 +19,29 @@ export interface HoroscopeData {
   loveText: string;
   careerPercentage: number;
   careerText: string;
+  healthPercentage: number;
+  healthText: string;
   generalReading: string;
+  dailyAffirmation: string;
+  compatibleSign: string;
+  avoidSign: string;
+  focusArea: string;
+  focusEmoji: string;
 }
 
 export const zodiacSigns: ZodiacSign[] = [
-  { id: 'aries', name: 'Aries', symbol: '♈', dateRange: 'Mar 21 - Apr 19', element: 'Fire', color: '#FF6B6B' },
-  { id: 'taurus', name: 'Taurus', symbol: '♉', dateRange: 'Apr 20 - May 20', element: 'Earth', color: '#4ECDC4' },
-  { id: 'gemini', name: 'Gemini', symbol: '♊', dateRange: 'May 21 - Jun 20', element: 'Air', color: '#FFE66D' },
-  { id: 'cancer', name: 'Cancer', symbol: '♋', dateRange: 'Jun 21 - Jul 22', element: 'Water', color: '#95E1D3' },
-  { id: 'leo', name: 'Leo', symbol: '♌', dateRange: 'Jul 23 - Aug 22', element: 'Fire', color: '#F9A826' },
-  { id: 'virgo', name: 'Virgo', symbol: '♍', dateRange: 'Aug 23 - Sep 22', element: 'Earth', color: '#A8D8EA' },
-  { id: 'libra', name: 'Libra', symbol: '♎', dateRange: 'Sep 23 - Oct 22', element: 'Air', color: '#FFB6C1' },
-  { id: 'scorpio', name: 'Scorpio', symbol: '♏', dateRange: 'Oct 23 - Nov 21', element: 'Water', color: '#9B59B6' },
-  { id: 'sagittarius', name: 'Sagittarius', symbol: '♐', dateRange: 'Nov 22 - Dec 21', element: 'Fire', color: '#E74C3C' },
-  { id: 'capricorn', name: 'Capricorn', symbol: '♑', dateRange: 'Dec 22 - Jan 19', element: 'Earth', color: '#7F8C8D' },
-  { id: 'aquarius', name: 'Aquarius', symbol: '♒', dateRange: 'Jan 20 - Feb 18', element: 'Air', color: '#3498DB' },
-  { id: 'pisces', name: 'Pisces', symbol: '♓', dateRange: 'Feb 19 - Mar 20', element: 'Water', color: '#9B59B6' },
+  { id: 'aries', name: 'Aries', symbol: '♈', dateRange: 'Mar 21 - Apr 19', element: 'Fire', color: '#FF6B6B', rulingPlanet: 'Mars', planetSymbol: '♂' },
+  { id: 'taurus', name: 'Taurus', symbol: '♉', dateRange: 'Apr 20 - May 20', element: 'Earth', color: '#4ECDC4', rulingPlanet: 'Venus', planetSymbol: '♀' },
+  { id: 'gemini', name: 'Gemini', symbol: '♊', dateRange: 'May 21 - Jun 20', element: 'Air', color: '#FFE66D', rulingPlanet: 'Mercury', planetSymbol: '☿' },
+  { id: 'cancer', name: 'Cancer', symbol: '♋', dateRange: 'Jun 21 - Jul 22', element: 'Water', color: '#95E1D3', rulingPlanet: 'Moon', planetSymbol: '☽' },
+  { id: 'leo', name: 'Leo', symbol: '♌', dateRange: 'Jul 23 - Aug 22', element: 'Fire', color: '#F9A826', rulingPlanet: 'Sun', planetSymbol: '☉' },
+  { id: 'virgo', name: 'Virgo', symbol: '♍', dateRange: 'Aug 23 - Sep 22', element: 'Earth', color: '#A8D8EA', rulingPlanet: 'Mercury', planetSymbol: '☿' },
+  { id: 'libra', name: 'Libra', symbol: '♎', dateRange: 'Sep 23 - Oct 22', element: 'Air', color: '#FFB6C1', rulingPlanet: 'Venus', planetSymbol: '♀' },
+  { id: 'scorpio', name: 'Scorpio', symbol: '♏', dateRange: 'Oct 23 - Nov 21', element: 'Water', color: '#9B59B6', rulingPlanet: 'Pluto', planetSymbol: '♇' },
+  { id: 'sagittarius', name: 'Sagittarius', symbol: '♐', dateRange: 'Nov 22 - Dec 21', element: 'Fire', color: '#E74C3C', rulingPlanet: 'Jupiter', planetSymbol: '♃' },
+  { id: 'capricorn', name: 'Capricorn', symbol: '♑', dateRange: 'Dec 22 - Jan 19', element: 'Earth', color: '#7F8C8D', rulingPlanet: 'Saturn', planetSymbol: '♄' },
+  { id: 'aquarius', name: 'Aquarius', symbol: '♒', dateRange: 'Jan 20 - Feb 18', element: 'Air', color: '#3498DB', rulingPlanet: 'Uranus', planetSymbol: '♅' },
+  { id: 'pisces', name: 'Pisces', symbol: '♓', dateRange: 'Feb 19 - Mar 20', element: 'Water', color: '#9B59B6', rulingPlanet: 'Neptune', planetSymbol: '♆' },
 ];
 
 const moods = ['Energetic', 'Romantic', 'Creative', 'Peaceful', 'Adventurous', 'Reflective', 'Passionate', 'Balanced', 'Inspired', 'Confident'];
@@ -47,6 +56,32 @@ const luckyColorSets = [
   ['#667eea', '#764ba2', '#f093fb'],
   ['#4facfe', '#00f2fe', '#43e97b'],
   ['#fa709a', '#fee140', '#30cfd0'],
+];
+
+const focusAreas = [
+  { area: 'Communication', emoji: '💬' },
+  { area: 'Self-Care', emoji: '🧘' },
+  { area: 'Finances', emoji: '💰' },
+  { area: 'Relationships', emoji: '👥' },
+  { area: 'Creativity', emoji: '🎨' },
+  { area: 'Health', emoji: '💪' },
+  { area: 'Learning', emoji: '📚' },
+  { area: 'Adventure', emoji: '🌍' },
+];
+
+const affirmations = [
+  "I am worthy of all the beautiful things the universe has in store for me.",
+  "Today I choose joy, abundance, and positive energy.",
+  "I trust the journey and embrace each moment with gratitude.",
+  "My inner light shines brightly and attracts wonderful opportunities.",
+  "I am aligned with my highest purpose and deepest intentions.",
+  "Every challenge is an opportunity for growth and transformation.",
+  "I radiate confidence, love, and positive energy wherever I go.",
+  "I am open to receiving all the blessings the cosmos offers today.",
+  "My intuition guides me towards my greatest good.",
+  "I am surrounded by love, support, and cosmic protection.",
+  "Today I manifest my dreams with clarity and intention.",
+  "I embrace change as a pathway to my highest potential.",
 ];
 
 const loveTexts = [
@@ -70,6 +105,33 @@ const careerTexts = [
   "Strategic planning today will yield significant rewards in the coming weeks. Think long-term.",
   "Your professional reputation is shining bright. Use this energy to network and expand your influence.",
 ];
+
+const healthTexts = [
+  "Your energy levels are peaking today. Channel this vitality into physical activities you enjoy.",
+  "Mind-body balance is essential now. Consider meditation or yoga to align your inner energies.",
+  "Pay attention to your rest patterns. Quality sleep will enhance your cosmic receptivity.",
+  "Hydration and nourishment are key today. Honor your body with wholesome, energizing foods.",
+  "Your intuition about your health is strong. Listen to what your body is telling you.",
+  "Physical movement will help release any stagnant energy. Take a walk in nature if possible.",
+  "Stress may manifest physically. Practice deep breathing and grounding exercises today.",
+  "Your healing energy is amplified. Focus on recovery and gentle self-care practices.",
+];
+
+// Compatibility mapping based on elements
+const compatibilityMap: Record<string, { compatible: string[], avoid: string[] }> = {
+  aries: { compatible: ['leo', 'sagittarius', 'gemini', 'aquarius'], avoid: ['cancer', 'capricorn'] },
+  taurus: { compatible: ['virgo', 'capricorn', 'cancer', 'pisces'], avoid: ['leo', 'aquarius'] },
+  gemini: { compatible: ['libra', 'aquarius', 'aries', 'leo'], avoid: ['virgo', 'pisces'] },
+  cancer: { compatible: ['scorpio', 'pisces', 'taurus', 'virgo'], avoid: ['aries', 'libra'] },
+  leo: { compatible: ['aries', 'sagittarius', 'gemini', 'libra'], avoid: ['taurus', 'scorpio'] },
+  virgo: { compatible: ['taurus', 'capricorn', 'cancer', 'scorpio'], avoid: ['gemini', 'sagittarius'] },
+  libra: { compatible: ['gemini', 'aquarius', 'leo', 'sagittarius'], avoid: ['cancer', 'capricorn'] },
+  scorpio: { compatible: ['cancer', 'pisces', 'virgo', 'capricorn'], avoid: ['leo', 'aquarius'] },
+  sagittarius: { compatible: ['aries', 'leo', 'libra', 'aquarius'], avoid: ['virgo', 'pisces'] },
+  capricorn: { compatible: ['taurus', 'virgo', 'scorpio', 'pisces'], avoid: ['aries', 'libra'] },
+  aquarius: { compatible: ['gemini', 'libra', 'aries', 'sagittarius'], avoid: ['taurus', 'scorpio'] },
+  pisces: { compatible: ['cancer', 'scorpio', 'taurus', 'capricorn'], avoid: ['gemini', 'sagittarius'] },
+};
 
 // Seeded random number generator
 function seededRandom(seed: number): () => number {
@@ -103,6 +165,16 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
   const colorSetIndex = Math.floor(random() * luckyColorSets.length);
   const loveTextIndex = Math.floor(random() * loveTexts.length);
   const careerTextIndex = Math.floor(random() * careerTexts.length);
+  const healthTextIndex = Math.floor(random() * healthTexts.length);
+  const affirmationIndex = Math.floor(random() * affirmations.length);
+  const focusIndex = Math.floor(random() * focusAreas.length);
+  
+  const compatibility = compatibilityMap[signId] || { compatible: [], avoid: [] };
+  const compatibleIndex = Math.floor(random() * compatibility.compatible.length);
+  const avoidIndex = Math.floor(random() * compatibility.avoid.length);
+  
+  const compatibleSign = zodiacSigns.find(s => s.id === compatibility.compatible[compatibleIndex]);
+  const avoidSign = zodiacSigns.find(s => s.id === compatibility.avoid[avoidIndex]);
   
   return {
     mood: moods[moodIndex],
@@ -114,6 +186,13 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
     loveText: loveTexts[loveTextIndex],
     careerPercentage: Math.floor(random() * 40) + 60,
     careerText: careerTexts[careerTextIndex],
+    healthPercentage: Math.floor(random() * 40) + 60,
+    healthText: healthTexts[healthTextIndex],
     generalReading: `The celestial alignment today brings ${moods[moodIndex].toLowerCase()} energy to your ${zodiacSigns.find(s => s.id === signId)?.element || 'cosmic'} nature.`,
+    dailyAffirmation: affirmations[affirmationIndex],
+    compatibleSign: compatibleSign?.name || 'Leo',
+    avoidSign: avoidSign?.name || 'Capricorn',
+    focusArea: focusAreas[focusIndex].area,
+    focusEmoji: focusAreas[focusIndex].emoji,
   };
 }

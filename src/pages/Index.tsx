@@ -5,6 +5,9 @@ import { SignPicker } from '@/components/horoscope/SignPicker';
 import { DayTabs } from '@/components/horoscope/DayTabs';
 import { MainHoroscopeCard } from '@/components/horoscope/MainHoroscopeCard';
 import { DetailCard } from '@/components/horoscope/DetailCard';
+import { HealthCard } from '@/components/horoscope/HealthCard';
+import { AffirmationCard } from '@/components/horoscope/AffirmationCard';
+import { InsightsCard } from '@/components/horoscope/InsightsCard';
 import { ActionButtons } from '@/components/horoscope/ActionButtons';
 import { StarField } from '@/components/horoscope/StarField';
 import { zodiacSigns, getHoroscopeData } from '@/lib/horoscopeData';
@@ -61,6 +64,18 @@ const Index = () => {
           {/* Main Horoscope Card */}
           <MainHoroscopeCard sign={sign} horoscope={horoscope} />
 
+          {/* Daily Affirmation */}
+          <AffirmationCard affirmation={horoscope.dailyAffirmation} />
+
+          {/* Insights Card */}
+          <InsightsCard 
+            sign={sign}
+            compatibleSign={horoscope.compatibleSign}
+            avoidSign={horoscope.avoidSign}
+            focusArea={horoscope.focusArea}
+            focusEmoji={horoscope.focusEmoji}
+          />
+
           {/* Detail Cards */}
           <DetailCard 
             type="love" 
@@ -71,6 +86,10 @@ const Index = () => {
             type="career" 
             percentage={horoscope.careerPercentage} 
             text={horoscope.careerText} 
+          />
+          <HealthCard 
+            percentage={horoscope.healthPercentage} 
+            text={horoscope.healthText} 
           />
         </motion.div>
       </AnimatePresence>
