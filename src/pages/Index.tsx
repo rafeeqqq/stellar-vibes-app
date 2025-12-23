@@ -3,11 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SignPicker } from '@/components/horoscope/SignPicker';
 import { DayTabs } from '@/components/horoscope/DayTabs';
 import { MainHoroscopeCard } from '@/components/horoscope/MainHoroscopeCard';
-import { DetailCard } from '@/components/horoscope/DetailCard';
-import { HealthCard } from '@/components/horoscope/HealthCard';
+import { DailyInfoCard } from '@/components/horoscope/DailyInfoCard';
+import { DailyReadingCard } from '@/components/horoscope/DailyReadingCard';
 import { AffirmationCard } from '@/components/horoscope/AffirmationCard';
-import { InsightsCard } from '@/components/horoscope/InsightsCard';
-import { PanchangCard } from '@/components/horoscope/PanchangCard';
+import { CombinedScoresCard } from '@/components/horoscope/CombinedScoresCard';
 import { ActionButtons } from '@/components/horoscope/ActionButtons';
 import { StarField } from '@/components/horoscope/StarField';
 import { zodiacSigns, getHoroscopeData } from '@/lib/horoscopeData';
@@ -52,7 +51,7 @@ const Index = () => {
       />
 
       {/* Day Tabs */}
-      <div className="mb-4 sm:mb-6">
+      <div className="mb-4 sm:mb-5">
         <DayTabs activeDay={activeDay} onDayChange={setActiveDay} />
       </div>
 
@@ -66,41 +65,42 @@ const Index = () => {
           transition={{ duration: 0.3 }}
           className="space-y-3 sm:space-y-4 relative z-10"
         >
-          {/* Main Horoscope Card */}
+          {/* Main Horoscope Card - Compact */}
           <MainHoroscopeCard sign={sign} horoscope={horoscope} />
 
-          {/* Panchang Card */}
-          <PanchangCard 
+          {/* Combined Daily Info Card (Panchang + Insights merged) */}
+          <DailyInfoCard 
             sign={sign}
             nakshatra={horoscope.nakshatra}
             tithi={horoscope.tithi}
-          />
-
-          {/* Daily Affirmation */}
-          <AffirmationCard affirmation={horoscope.dailyAffirmation} />
-          {/* Insights Card */}
-          <InsightsCard 
-            sign={sign}
             compatibleSign={horoscope.compatibleSign}
             avoidSign={horoscope.avoidSign}
             focusArea={horoscope.focusArea}
             focusEmoji={horoscope.focusEmoji}
           />
 
-          {/* Detail Cards */}
-          <DetailCard 
-            type="love" 
-            percentage={horoscope.lovePercentage} 
-            text={horoscope.loveText} 
+          {/* Daily Reading with Do's/Don'ts, Remedy, Mantra */}
+          <DailyReadingCard
+            sign={sign}
+            generalReading={horoscope.generalReading}
+            dos={horoscope.dos}
+            donts={horoscope.donts}
+            shubhMuhurat={horoscope.shubhMuhurat}
+            remedy={horoscope.remedy}
+            mantra={horoscope.mantra}
           />
-          <DetailCard 
-            type="career" 
-            percentage={horoscope.careerPercentage} 
-            text={horoscope.careerText} 
-          />
-          <HealthCard 
-            percentage={horoscope.healthPercentage} 
-            text={horoscope.healthText} 
+
+          {/* Daily Affirmation */}
+          <AffirmationCard affirmation={horoscope.dailyAffirmation} />
+
+          {/* Combined Love, Career, Health Scores */}
+          <CombinedScoresCard 
+            lovePercentage={horoscope.lovePercentage}
+            loveText={horoscope.loveText}
+            careerPercentage={horoscope.careerPercentage}
+            careerText={horoscope.careerText}
+            healthPercentage={horoscope.healthPercentage}
+            healthText={horoscope.healthText}
           />
         </motion.div>
       </AnimatePresence>

@@ -32,6 +32,12 @@ export interface HoroscopeData {
   focusEmoji: string;
   nakshatra: string;
   tithi: string;
+  // New enhanced fields
+  dos: string[];
+  donts: string[];
+  shubhMuhurat: string;
+  remedy: string;
+  mantra: string;
 }
 
 export const zodiacSigns: ZodiacSign[] = [
@@ -136,6 +142,56 @@ const healthTexts = [
   "Your healing energy is amplified. Focus on recovery and gentle self-care practices.",
 ];
 
+// New enhanced data arrays
+const dosArrays = [
+  ["Start new ventures", "Wear bright colors", "Connect with family"],
+  ["Focus on health", "Practice gratitude", "Help someone in need"],
+  ["Meditate in morning", "Invest wisely", "Express your feelings"],
+  ["Take calculated risks", "Learn something new", "Spend time in nature"],
+  ["Strengthen relationships", "Plan for future", "Exercise regularly"],
+  ["Show kindness", "Trust your instincts", "Embrace change"],
+];
+
+const dontsArrays = [
+  ["Avoid arguments", "Don't make hasty decisions", "Skip heavy meals"],
+  ["Avoid lending money", "Don't travel south", "Avoid negative people"],
+  ["Don't start new projects", "Avoid confrontations", "Skip risky investments"],
+  ["Don't sign contracts", "Avoid gossip", "Skip impulsive purchases"],
+  ["Avoid overworking", "Don't ignore health", "Skip late nights"],
+  ["Don't reveal secrets", "Avoid anger", "Skip important meetings"],
+];
+
+const shubhMuhurats = [
+  "6:00 AM - 7:30 AM",
+  "9:15 AM - 10:45 AM",
+  "11:30 AM - 1:00 PM",
+  "2:45 PM - 4:15 PM",
+  "5:30 PM - 7:00 PM",
+  "8:00 PM - 9:30 PM",
+];
+
+const remedies = [
+  "Offer water to the Sun at sunrise",
+  "Feed green vegetables to a cow",
+  "Donate white items to the needy",
+  "Light a ghee lamp in the evening",
+  "Chant your ruling planet's mantra 11 times",
+  "Wear your lucky color today",
+  "Visit a temple and offer flowers",
+  "Practice 10 minutes of silent meditation",
+];
+
+const mantras = [
+  "ॐ सूर्याय नमः (Om Suryaya Namah)",
+  "ॐ चंद्राय नमः (Om Chandraya Namah)",
+  "ॐ गणेशाय नमः (Om Ganeshaya Namah)",
+  "ॐ नमः शिवाय (Om Namah Shivaya)",
+  "ॐ श्री महालक्ष्म्यै नमः (Om Shri Mahalakshmyai Namah)",
+  "ॐ हनुमते नमः (Om Hanumate Namah)",
+  "ॐ शांति ॐ (Om Shanti Om)",
+  "ॐ भूर्भुवः स्वः (Om Bhur Bhuvah Svah)",
+];
+
 // Compatibility mapping based on elements
 const compatibilityMap: Record<string, { compatible: string[], avoid: string[] }> = {
   aries: { compatible: ['leo', 'sagittarius', 'gemini', 'aquarius'], avoid: ['cancer', 'capricorn'] },
@@ -197,6 +253,13 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
   const compatibleSign = zodiacSigns.find(s => s.id === compatibility.compatible[compatibleIndex]);
   const avoidSign = zodiacSigns.find(s => s.id === compatibility.avoid[avoidIndex]);
   
+  // New enhanced data indices
+  const dosIndex = Math.floor(random() * dosArrays.length);
+  const dontsIndex = Math.floor(random() * dontsArrays.length);
+  const shubhIndex = Math.floor(random() * shubhMuhurats.length);
+  const remedyIndex = Math.floor(random() * remedies.length);
+  const mantraIndex = Math.floor(random() * mantras.length);
+
   return {
     mood: moods[moodIndex],
     moodEmoji: moodEmojis[moodIndex],
@@ -209,7 +272,7 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
     careerText: careerTexts[careerTextIndex],
     healthPercentage: Math.floor(random() * 40) + 60,
     healthText: healthTexts[healthTextIndex],
-    generalReading: `The celestial alignment today brings ${moods[moodIndex].toLowerCase()} energy to your ${zodiacSigns.find(s => s.id === signId)?.element || 'cosmic'} nature.`,
+    generalReading: `The celestial alignment today brings ${moods[moodIndex].toLowerCase()} energy to your ${zodiacSigns.find(s => s.id === signId)?.element || 'cosmic'} nature. Trust in the cosmic flow and embrace the opportunities that come your way. Your ruling planet ${zodiacSigns.find(s => s.id === signId)?.rulingPlanet || 'guides'} you towards success and fulfillment.`,
     dailyAffirmation: affirmations[affirmationIndex],
     compatibleSign: compatibleSign?.name || 'Leo',
     avoidSign: avoidSign?.name || 'Capricorn',
@@ -217,5 +280,10 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
     focusEmoji: focusAreas[focusIndex].emoji,
     nakshatra: nakshatras[nakshatraIndex],
     tithi: tithis[tithiIndex],
+    dos: dosArrays[dosIndex],
+    donts: dontsArrays[dontsIndex],
+    shubhMuhurat: shubhMuhurats[shubhIndex],
+    remedy: remedies[remedyIndex],
+    mantra: mantras[mantraIndex],
   };
 }
