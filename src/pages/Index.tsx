@@ -91,7 +91,7 @@ const Index = () => {
           />
 
           {/* Daily Affirmation */}
-          <AffirmationCard affirmation={horoscope.dailyAffirmation} />
+          <AffirmationCard affirmation={horoscope.dailyAffirmation} signColor={sign.color} />
 
           {/* Combined Love, Career, Health Scores */}
           <CombinedScoresCard 

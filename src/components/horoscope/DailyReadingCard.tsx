@@ -32,7 +32,7 @@ export function DailyReadingCard({
       <div className="mb-4">
         <div className="flex items-center gap-2 mb-2">
           <BookOpen className="w-5 h-5 text-primary" />
-          <h3 className="font-serif text-lg sm:text-xl font-semibold text-gradient">
+          <h3 className="font-sans text-lg sm:text-xl font-bold bg-gradient-to-r from-primary via-purple-500 to-primary bg-clip-text text-transparent">
             Today's Reading
           </h3>
         </div>
