@@ -1,11 +1,14 @@
 export interface ZodiacSign {
   id: string;
   name: string;
+  hindiName: string;
   symbol: string;
   dateRange: string;
   element: 'Fire' | 'Earth' | 'Air' | 'Water';
+  elementHindi: string;
   color: string;
   rulingPlanet: string;
+  rulingPlanetHindi: string;
   planetSymbol: string;
 }
 
@@ -27,21 +30,23 @@ export interface HoroscopeData {
   avoidSign: string;
   focusArea: string;
   focusEmoji: string;
+  nakshatra: string;
+  tithi: string;
 }
 
 export const zodiacSigns: ZodiacSign[] = [
-  { id: 'aries', name: 'Aries', symbol: '♈', dateRange: 'Mar 21 - Apr 19', element: 'Fire', color: '#FF6B6B', rulingPlanet: 'Mars', planetSymbol: '♂' },
-  { id: 'taurus', name: 'Taurus', symbol: '♉', dateRange: 'Apr 20 - May 20', element: 'Earth', color: '#4ECDC4', rulingPlanet: 'Venus', planetSymbol: '♀' },
-  { id: 'gemini', name: 'Gemini', symbol: '♊', dateRange: 'May 21 - Jun 20', element: 'Air', color: '#FFE66D', rulingPlanet: 'Mercury', planetSymbol: '☿' },
-  { id: 'cancer', name: 'Cancer', symbol: '♋', dateRange: 'Jun 21 - Jul 22', element: 'Water', color: '#95E1D3', rulingPlanet: 'Moon', planetSymbol: '☽' },
-  { id: 'leo', name: 'Leo', symbol: '♌', dateRange: 'Jul 23 - Aug 22', element: 'Fire', color: '#F9A826', rulingPlanet: 'Sun', planetSymbol: '☉' },
-  { id: 'virgo', name: 'Virgo', symbol: '♍', dateRange: 'Aug 23 - Sep 22', element: 'Earth', color: '#A8D8EA', rulingPlanet: 'Mercury', planetSymbol: '☿' },
-  { id: 'libra', name: 'Libra', symbol: '♎', dateRange: 'Sep 23 - Oct 22', element: 'Air', color: '#FFB6C1', rulingPlanet: 'Venus', planetSymbol: '♀' },
-  { id: 'scorpio', name: 'Scorpio', symbol: '♏', dateRange: 'Oct 23 - Nov 21', element: 'Water', color: '#9B59B6', rulingPlanet: 'Pluto', planetSymbol: '♇' },
-  { id: 'sagittarius', name: 'Sagittarius', symbol: '♐', dateRange: 'Nov 22 - Dec 21', element: 'Fire', color: '#E74C3C', rulingPlanet: 'Jupiter', planetSymbol: '♃' },
-  { id: 'capricorn', name: 'Capricorn', symbol: '♑', dateRange: 'Dec 22 - Jan 19', element: 'Earth', color: '#7F8C8D', rulingPlanet: 'Saturn', planetSymbol: '♄' },
-  { id: 'aquarius', name: 'Aquarius', symbol: '♒', dateRange: 'Jan 20 - Feb 18', element: 'Air', color: '#3498DB', rulingPlanet: 'Uranus', planetSymbol: '♅' },
-  { id: 'pisces', name: 'Pisces', symbol: '♓', dateRange: 'Feb 19 - Mar 20', element: 'Water', color: '#9B59B6', rulingPlanet: 'Neptune', planetSymbol: '♆' },
+  { id: 'aries', name: 'Aries', hindiName: 'मेष', symbol: '♈', dateRange: 'Mar 21 - Apr 19', element: 'Fire', elementHindi: 'अग्नि', color: '#FF6B6B', rulingPlanet: 'Mars', rulingPlanetHindi: 'मंगल', planetSymbol: '♂' },
+  { id: 'taurus', name: 'Taurus', hindiName: 'वृषभ', symbol: '♉', dateRange: 'Apr 20 - May 20', element: 'Earth', elementHindi: 'पृथ्वी', color: '#4ECDC4', rulingPlanet: 'Venus', rulingPlanetHindi: 'शुक्र', planetSymbol: '♀' },
+  { id: 'gemini', name: 'Gemini', hindiName: 'मिथुन', symbol: '♊', dateRange: 'May 21 - Jun 20', element: 'Air', elementHindi: 'वायु', color: '#FFE66D', rulingPlanet: 'Mercury', rulingPlanetHindi: 'बुध', planetSymbol: '☿' },
+  { id: 'cancer', name: 'Cancer', hindiName: 'कर्क', symbol: '♋', dateRange: 'Jun 21 - Jul 22', element: 'Water', elementHindi: 'जल', color: '#95E1D3', rulingPlanet: 'Moon', rulingPlanetHindi: 'चंद्र', planetSymbol: '☽' },
+  { id: 'leo', name: 'Leo', hindiName: 'सिंह', symbol: '♌', dateRange: 'Jul 23 - Aug 22', element: 'Fire', elementHindi: 'अग्नि', color: '#F9A826', rulingPlanet: 'Sun', rulingPlanetHindi: 'सूर्य', planetSymbol: '☉' },
+  { id: 'virgo', name: 'Virgo', hindiName: 'कन्या', symbol: '♍', dateRange: 'Aug 23 - Sep 22', element: 'Earth', elementHindi: 'पृथ्वी', color: '#A8D8EA', rulingPlanet: 'Mercury', rulingPlanetHindi: 'बुध', planetSymbol: '☿' },
+  { id: 'libra', name: 'Libra', hindiName: 'तुला', symbol: '♎', dateRange: 'Sep 23 - Oct 22', element: 'Air', elementHindi: 'वायु', color: '#FFB6C1', rulingPlanet: 'Venus', rulingPlanetHindi: 'शुक्र', planetSymbol: '♀' },
+  { id: 'scorpio', name: 'Scorpio', hindiName: 'वृश्चिक', symbol: '♏', dateRange: 'Oct 23 - Nov 21', element: 'Water', elementHindi: 'जल', color: '#9B59B6', rulingPlanet: 'Mars', rulingPlanetHindi: 'मंगल', planetSymbol: '♂' },
+  { id: 'sagittarius', name: 'Sagittarius', hindiName: 'धनु', symbol: '♐', dateRange: 'Nov 22 - Dec 21', element: 'Fire', elementHindi: 'अग्नि', color: '#E74C3C', rulingPlanet: 'Jupiter', rulingPlanetHindi: 'गुरु', planetSymbol: '♃' },
+  { id: 'capricorn', name: 'Capricorn', hindiName: 'मकर', symbol: '♑', dateRange: 'Dec 22 - Jan 19', element: 'Earth', elementHindi: 'पृथ्वी', color: '#7F8C8D', rulingPlanet: 'Saturn', rulingPlanetHindi: 'शनि', planetSymbol: '♄' },
+  { id: 'aquarius', name: 'Aquarius', hindiName: 'कुंभ', symbol: '♒', dateRange: 'Jan 20 - Feb 18', element: 'Air', elementHindi: 'वायु', color: '#3498DB', rulingPlanet: 'Saturn', rulingPlanetHindi: 'शनि', planetSymbol: '♄' },
+  { id: 'pisces', name: 'Pisces', hindiName: 'मीन', symbol: '♓', dateRange: 'Feb 19 - Mar 20', element: 'Water', elementHindi: 'जल', color: '#9B59B6', rulingPlanet: 'Jupiter', rulingPlanetHindi: 'गुरु', planetSymbol: '♃' },
 ];
 
 const moods = ['Energetic', 'Romantic', 'Creative', 'Peaceful', 'Adventurous', 'Reflective', 'Passionate', 'Balanced', 'Inspired', 'Confident'];
@@ -58,6 +63,20 @@ const luckyColorSets = [
   ['#fa709a', '#fee140', '#30cfd0'],
 ];
 
+const nakshatras = [
+  'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra', 'Punarvasu',
+  'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni', 'Hasta',
+  'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha', 'Mula', 'Purva Ashadha',
+  'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhisha', 'Purva Bhadrapada',
+  'Uttara Bhadrapada', 'Revati'
+];
+
+const tithis = [
+  'Pratipada', 'Dwitiya', 'Tritiya', 'Chaturthi', 'Panchami', 'Shashthi', 'Saptami',
+  'Ashtami', 'Navami', 'Dashami', 'Ekadashi', 'Dwadashi', 'Trayodashi', 'Chaturdashi',
+  'Purnima', 'Amavasya'
+];
+
 const focusAreas = [
   { area: 'Communication', emoji: '💬' },
   { area: 'Self-Care', emoji: '🧘' },
@@ -66,7 +85,7 @@ const focusAreas = [
   { area: 'Creativity', emoji: '🎨' },
   { area: 'Health', emoji: '💪' },
   { area: 'Learning', emoji: '📚' },
-  { area: 'Adventure', emoji: '🌍' },
+  { area: 'Spirituality', emoji: '🙏' },
 ];
 
 const affirmations = [
@@ -168,6 +187,8 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
   const healthTextIndex = Math.floor(random() * healthTexts.length);
   const affirmationIndex = Math.floor(random() * affirmations.length);
   const focusIndex = Math.floor(random() * focusAreas.length);
+  const nakshatraIndex = Math.floor(random() * nakshatras.length);
+  const tithiIndex = Math.floor(random() * tithis.length);
   
   const compatibility = compatibilityMap[signId] || { compatible: [], avoid: [] };
   const compatibleIndex = Math.floor(random() * compatibility.compatible.length);
@@ -194,5 +215,7 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
     avoidSign: avoidSign?.name || 'Capricorn',
     focusArea: focusAreas[focusIndex].area,
     focusEmoji: focusAreas[focusIndex].emoji,
+    nakshatra: nakshatras[nakshatraIndex],
+    tithi: tithis[tithiIndex],
   };
 }
