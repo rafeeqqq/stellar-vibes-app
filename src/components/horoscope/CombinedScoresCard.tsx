@@ -15,8 +15,8 @@ interface ScoreItemProps {
   label: string;
   percentage: number;
   text: string;
-  bgClass: string;
-  borderClass: string;
+  bgColor: string;
+  borderColor: string;
   accentColor: string;
 }
 
@@ -25,13 +25,17 @@ function ScoreItem({
   label,
   percentage,
   text,
-  bgClass,
-  borderClass,
+  bgColor,
+  borderColor,
   accentColor,
 }: ScoreItemProps) {
   return (
     <motion.div
-      className={`rounded-2xl p-4 sm:p-5 border ${bgClass} ${borderClass}`}
+      className="rounded-2xl p-4 sm:p-5 border"
+      style={{ 
+        background: bgColor,
+        borderColor: borderColor,
+      }}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -39,24 +43,33 @@ function ScoreItem({
       {/* Header row */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2.5">
-          <div className={accentColor}>{icon}</div>
+          <div style={{ color: accentColor }}>{icon}</div>
           <h4 className="font-sans font-semibold text-lg sm:text-xl text-foreground">
             {label}
           </h4>
         </div>
-        <span className={`font-bold text-lg sm:text-xl ${accentColor}`}>
+        <span 
+          className="font-bold text-lg sm:text-xl"
+          style={{ color: accentColor }}
+        >
           {percentage}%
         </span>
       </div>
 
-      {/* Description text - more prominent */}
+      {/* Description text */}
       <p className="text-sm sm:text-base text-foreground/85 leading-relaxed">
         {text}
       </p>
 
-      {/* Additional insight tip based on percentage */}
-      <div className={`mt-3 pt-3 border-t border-border/50`}>
-        <p className={`text-xs sm:text-sm font-medium ${accentColor}`}>
+      {/* Additional insight tip */}
+      <div 
+        className="mt-3 pt-3"
+        style={{ borderTop: `1px solid ${borderColor}` }}
+      >
+        <p 
+          className="text-xs sm:text-sm font-medium"
+          style={{ color: accentColor }}
+        >
           {percentage >= 80 
             ? `Excellent energy for ${label.toLowerCase()} matters today!`
             : percentage >= 60 
@@ -100,27 +113,27 @@ export function CombinedScoresCard({
           label="Love"
           percentage={lovePercentage}
           text={loveText}
-          bgClass="bg-love-gradient"
-          borderClass="border-love/30"
-          accentColor="text-love-dark"
+          bgColor="#FFF5F5"
+          borderColor="#FECACA"
+          accentColor="#E53E3E"
         />
         <ScoreItem
           icon={<Briefcase className="w-5 h-5 sm:w-6 sm:h-6" />}
           label="Career"
           percentage={careerPercentage}
           text={careerText}
-          bgClass="bg-career-gradient"
-          borderClass="border-career/30"
-          accentColor="text-career-dark"
+          bgColor="#FFFAF0"
+          borderColor="#FBD38D"
+          accentColor="#DD6B20"
         />
         <ScoreItem
           icon={<Activity className="w-5 h-5 sm:w-6 sm:h-6" />}
           label="Health"
           percentage={healthPercentage}
           text={healthText}
-          bgClass="bg-secondary"
-          borderClass="border-primary/20"
-          accentColor="text-primary"
+          bgColor="#F0FFF4"
+          borderColor="#9AE6B4"
+          accentColor="#38A169"
         />
       </div>
     </motion.div>
