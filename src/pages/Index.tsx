@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignPicker } from '@/components/horoscope/SignPicker';
 import { DayTabs } from '@/components/horoscope/DayTabs';
@@ -12,6 +12,23 @@ import { StarField } from '@/components/horoscope/StarField';
 import { zodiacSigns, getHoroscopeData } from '@/lib/horoscopeData';
 import astrolokalLogo from '@/assets/astrolokal-logo.png';
 
+const getGreeting = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good Morning';
+  if (hour < 17) return 'Good Afternoon';
+  return 'Good Evening';
+};
+
+const formatDate = (offset: number) => {
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return date.toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    day: 'numeric', 
+    month: 'long' 
+  });
+};
+
 const Index = () => {
   const [selectedSign, setSelectedSign] = useState('leo');
   const [activeDay, setActiveDay] = useState<'yesterday' | 'today' | 'tomorrow'>('today');
@@ -19,6 +36,9 @@ const Index = () => {
   const dayOffset = activeDay === 'yesterday' ? -1 : activeDay === 'tomorrow' ? 1 : 0;
   const sign = zodiacSigns.find(s => s.id === selectedSign) || zodiacSigns[0];
   const horoscope = getHoroscopeData(selectedSign, dayOffset);
+
+  const greeting = useMemo(() => getGreeting(), []);
+  const currentDate = useMemo(() => formatDate(dayOffset), [dayOffset]);
 
   return (
     <div className="min-h-screen pb-32 sm:pb-28 relative overflow-x-hidden">
@@ -32,12 +52,22 @@ const Index = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
+        <motion.p 
+          className="text-primary/80 text-xs sm:text-sm font-medium mb-1"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          {greeting} ✨
+        </motion.p>
         <div className="flex items-center justify-center mb-1">
-          <img 
-            src={astrolokalLogo} 
-            alt="AstroLokal" 
-            className="h-9 sm:h-11 w-auto"
-          />
+          <div className="shimmer-effect rounded-lg">
+            <img 
+              src={astrolokalLogo} 
+              alt="AstroLokal" 
+              className="h-9 sm:h-11 w-auto"
+            />
+          </div>
         </div>
         <p className="text-muted-foreground text-xs sm:text-sm">
           Your Daily Horoscope
@@ -50,9 +80,18 @@ const Index = () => {
         onSelectSign={setSelectedSign} 
       />
 
-      {/* Day Tabs */}
+      {/* Day Tabs with Date Display */}
       <div className="mb-4 sm:mb-5">
         <DayTabs activeDay={activeDay} onDayChange={setActiveDay} />
+        <motion.p 
+          key={currentDate}
+          className="text-center text-muted-foreground text-[10px] sm:text-xs mt-2"
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {currentDate}
+        </motion.p>
       </div>
 
       {/* Main Content */}

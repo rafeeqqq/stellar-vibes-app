@@ -16,7 +16,7 @@ export function ActionButtons() {
       <div className="max-w-md mx-auto">
         <motion.button
           onClick={handleTalkToAstrologer}
-          className="w-full flex items-center justify-center gap-2 py-4 sm:py-5 px-6 rounded-xl sm:rounded-2xl text-white font-bold shadow-lg touch-manipulation text-base sm:text-lg"
+          className="w-full flex items-center justify-center gap-2 py-4 sm:py-5 px-6 rounded-xl sm:rounded-2xl text-white font-bold touch-manipulation text-base sm:text-lg animate-pulse-cta"
           style={{
             background: 'linear-gradient(135deg, #E85A4F 0%, #E98A61 50%, #F4A261 100%)',
           }}

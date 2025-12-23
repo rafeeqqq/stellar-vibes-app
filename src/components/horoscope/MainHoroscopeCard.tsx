@@ -10,7 +10,13 @@ interface MainHoroscopeCardProps {
 export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
   return (
     <motion.div
-      className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl bg-white/90 backdrop-blur-sm border border-primary/10 p-4 sm:p-5 overflow-hidden relative shadow-xl"
+      className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl bg-white/90 backdrop-blur-sm p-4 sm:p-5 overflow-hidden relative shadow-xl constellation-pattern"
+      style={{
+        border: `2px solid transparent`,
+        backgroundImage: `linear-gradient(white, white), linear-gradient(135deg, ${sign.color}40, ${sign.color}10, ${sign.color}30)`,
+        backgroundOrigin: 'border-box',
+        backgroundClip: 'padding-box, border-box',
+      }}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
@@ -18,8 +24,12 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
     >
       {/* Decorative glow */}
       <div 
-        className="absolute top-0 right-0 w-32 h-32 sm:w-40 sm:h-40 rounded-full opacity-20 blur-3xl pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${sign.color}60 0%, transparent 70%)` }}
+        className="absolute top-0 right-0 w-32 h-32 sm:w-40 sm:h-40 rounded-full opacity-25 blur-3xl pointer-events-none"
+        style={{ background: `radial-gradient(circle, ${sign.color}70 0%, transparent 70%)` }}
+      />
+      <div 
+        className="absolute bottom-0 left-0 w-24 h-24 sm:w-32 sm:h-32 rounded-full opacity-15 blur-2xl pointer-events-none"
+        style={{ background: `radial-gradient(circle, ${sign.color}50 0%, transparent 70%)` }}
       />
       
       {/* Top section with symbol and info side by side */}

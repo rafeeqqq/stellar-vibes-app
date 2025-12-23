@@ -158,4 +158,72 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Breathing animation for selected avatar */
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .animate-breathe {
+    animation: breathe 3s ease-in-out infinite;
+  }
+
+  /* Shimmer effect for logo */
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .shimmer-effect {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer-effect::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(35 95% 70% / 0.3) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Pulsing glow for CTA button */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px hsl(20 80% 55% / 0.4), 0 4px 15px hsl(20 80% 55% / 0.3); }
+    50% { box-shadow: 0 0 35px hsl(20 80% 55% / 0.6), 0 4px 25px hsl(20 80% 55% / 0.4); }
+  }
+
+  .animate-pulse-cta {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Animated gradient for mantra */
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 4s ease-in-out infinite;
+  }
+
+  /* Constellation pattern */
+  .constellation-pattern {
+    background-image: 
+      radial-gradient(circle at 10% 20%, hsl(20 80% 55% / 0.08) 1px, transparent 1px),
+      radial-gradient(circle at 90% 80%, hsl(35 95% 55% / 0.08) 1px, transparent 1px),
+      radial-gradient(circle at 40% 60%, hsl(20 80% 55% / 0.06) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 70% 30%, hsl(35 95% 55% / 0.06) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 25% 85%, hsl(20 80% 55% / 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 85% 15%, hsl(35 95% 55% / 0.05) 1px, transparent 1px);
+  }
 }
