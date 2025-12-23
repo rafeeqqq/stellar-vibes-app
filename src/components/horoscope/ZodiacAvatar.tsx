@@ -11,14 +11,14 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
   return (
     <motion.button
       onClick={onClick}
-      className="flex flex-col items-center gap-2 min-w-[72px]"
-      whileTap={{ scale: 0.95 }}
+      className="flex flex-col items-center gap-1.5 sm:gap-2 min-w-[60px] sm:min-w-[72px] touch-manipulation"
+      whileTap={{ scale: 0.92 }}
     >
       <motion.div
-        className={`relative w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 ${
+        className={`relative w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all duration-300 ${
           isSelected 
-            ? 'bg-gradient-to-br from-primary/30 to-accent/30 glow-golden' 
-            : 'bg-muted/50'
+            ? 'bg-gradient-to-br from-primary/30 to-accent/30 glow-golden shadow-lg' 
+            : 'bg-muted/50 hover:bg-muted/70 active:bg-muted/70'
         }`}
         animate={{
           scale: isSelected ? 1.1 : 1,
@@ -39,10 +39,10 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
             }}
           />
         )}
-        <span className="text-2xl z-10">{sign.symbol}</span>
+        <span className="text-xl sm:text-2xl z-10">{sign.symbol}</span>
       </motion.div>
       <span 
-        className={`text-xs font-medium transition-colors duration-300 ${
+        className={`text-[10px] sm:text-xs font-medium transition-colors duration-300 ${
           isSelected ? 'text-primary' : 'text-muted-foreground'
         }`}
       >
