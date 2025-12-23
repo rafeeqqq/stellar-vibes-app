@@ -20,10 +20,10 @@ export function SignPicker({ selectedSign, onSelectSign }: SignPickerProps) {
   }, [selectedSign]);
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-hidden">
       <motion.div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto scrollbar-hide py-4 px-4"
+        className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide py-3 sm:py-4 px-3 sm:px-4 snap-x snap-mandatory"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -31,9 +31,10 @@ export function SignPicker({ selectedSign, onSelectSign }: SignPickerProps) {
         {zodiacSigns.map((sign, index) => (
           <motion.div
             key={sign.id}
+            className="snap-center flex-shrink-0"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05, duration: 0.3 }}
+            transition={{ delay: index * 0.03, duration: 0.3 }}
           >
             <ZodiacAvatar
               sign={sign}

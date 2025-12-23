@@ -13,23 +13,23 @@ const tabs = [
 
 export function DayTabs({ activeDay, onDayChange }: DayTabsProps) {
   return (
-    <div className="flex justify-center px-4">
-      <div className="bg-muted/30 backdrop-blur-sm rounded-full p-1 flex gap-1">
+    <div className="flex justify-center px-3 sm:px-4">
+      <div className="bg-muted/40 backdrop-blur-md rounded-full p-1 sm:p-1.5 flex gap-0.5 sm:gap-1 border border-border/30 shadow-lg">
         {tabs.map((tab) => (
           <motion.button
             key={tab.id}
             onClick={() => onDayChange(tab.id)}
-            className={`relative px-6 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+            className={`relative px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-colors duration-300 touch-manipulation ${
               activeDay === tab.id 
                 ? 'text-primary-foreground' 
-                : 'text-muted-foreground hover:text-foreground'
+                : 'text-muted-foreground hover:text-foreground active:text-foreground'
             }`}
             whileTap={{ scale: 0.95 }}
           >
             {activeDay === tab.id && (
               <motion.div
                 layoutId="activeTab"
-                className="absolute inset-0 bg-gradient-to-r from-primary to-golden rounded-full"
+                className="absolute inset-0 bg-gradient-to-r from-primary to-golden rounded-full shadow-md"
                 transition={{ type: 'spring', stiffness: 500, damping: 30 }}
               />
             )}

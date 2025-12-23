@@ -18,23 +18,23 @@ const Index = () => {
   const horoscope = getHoroscopeData(selectedSign, dayOffset);
 
   return (
-    <div className="min-h-screen pb-28 relative">
+    <div className="min-h-screen pb-32 sm:pb-28 relative overflow-x-hidden">
       {/* Background Effects */}
       <StarField />
       
       {/* Header */}
       <motion.header 
-        className="pt-8 pb-4 px-4 text-center relative z-10"
+        className="pt-6 sm:pt-8 pb-3 sm:pb-4 px-4 text-center relative z-10"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <Moon className="w-5 h-5 text-primary" />
-          <h1 className="font-serif text-2xl font-semibold text-gradient">Daily Horoscope</h1>
-          <Stars className="w-5 h-5 text-primary" />
+        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
+          <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-primary animate-pulse" />
+          <h1 className="font-serif text-xl sm:text-2xl md:text-3xl font-semibold text-gradient">Daily Horoscope</h1>
+          <Stars className="w-4 h-4 sm:w-5 sm:h-5 text-primary animate-pulse" />
         </div>
-        <p className="text-muted-foreground text-sm">Discover your cosmic guidance</p>
+        <p className="text-muted-foreground text-xs sm:text-sm">Discover your cosmic guidance</p>
       </motion.header>
 
       {/* Sign Picker */}
@@ -44,7 +44,7 @@ const Index = () => {
       />
 
       {/* Day Tabs */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <DayTabs activeDay={activeDay} onDayChange={setActiveDay} />
       </div>
 
@@ -56,7 +56,7 @@ const Index = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="space-y-4 relative z-10"
+          className="space-y-3 sm:space-y-4 relative z-10"
         >
           {/* Main Horoscope Card */}
           <MainHoroscopeCard sign={sign} horoscope={horoscope} />
