@@ -41,7 +41,7 @@ const Index = () => {
           />
         </div>
         <p className="text-muted-foreground text-xs sm:text-sm">
-          आपका दैनिक राशिफल <span className="mx-1">•</span> Your Daily Horoscope
+          Your Daily Horoscope
         </p>
       </motion.header>
 
