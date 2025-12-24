@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SignPicker } from '@/components/horoscope/SignPicker';
 import { DayTabs } from '@/components/horoscope/DayTabs';
 import { MainHoroscopeCard } from '@/components/horoscope/MainHoroscopeCard';
-import { DailyInfoCard } from '@/components/horoscope/DailyInfoCard';
 import { DailyReadingCard } from '@/components/horoscope/DailyReadingCard';
 import { AffirmationCard } from '@/components/horoscope/AffirmationCard';
 import { CombinedScoresCard } from '@/components/horoscope/CombinedScoresCard';
@@ -104,21 +103,10 @@ const Index = () => {
           transition={{ duration: 0.3 }}
           className="space-y-3 sm:space-y-4 relative z-10"
         >
-          {/* Main Horoscope Card - Compact */}
+          {/* Main Horoscope Card */}
           <MainHoroscopeCard sign={sign} horoscope={horoscope} />
 
-          {/* Combined Daily Info Card (Panchang + Insights merged) */}
-          <DailyInfoCard 
-            sign={sign}
-            nakshatra={horoscope.nakshatra}
-            tithi={horoscope.tithi}
-            compatibleSign={horoscope.compatibleSign}
-            avoidSign={horoscope.avoidSign}
-            focusArea={horoscope.focusArea}
-            focusEmoji={horoscope.focusEmoji}
-          />
-
-          {/* Daily Reading with Do's/Don'ts, Remedy, Mantra */}
+          {/* Today's Reading - moved up */}
           <DailyReadingCard
             sign={sign}
             generalReading={horoscope.generalReading}
@@ -129,10 +117,7 @@ const Index = () => {
             mantra={horoscope.mantra}
           />
 
-          {/* Daily Affirmation */}
-          <AffirmationCard affirmation={horoscope.dailyAffirmation} signColor={sign.color} />
-
-          {/* Combined Love, Career, Health Scores */}
+          {/* Daily Insights - moved up */}
           <CombinedScoresCard 
             lovePercentage={horoscope.lovePercentage}
             loveText={horoscope.loveText}
@@ -141,6 +126,9 @@ const Index = () => {
             healthPercentage={horoscope.healthPercentage}
             healthText={horoscope.healthText}
           />
+
+          {/* Daily Affirmation - moved to bottom */}
+          <AffirmationCard affirmation={horoscope.dailyAffirmation} signColor={sign.color} />
         </motion.div>
       </AnimatePresence>
 
