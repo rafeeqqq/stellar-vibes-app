@@ -62,14 +62,14 @@ Return a JSON object with these exact fields:
   "moneyText": "A specific financial/money insight (30-50 words)",
   "healthText": "A specific health/wellness insight (30-50 words)",
   "travelText": "A specific travel/movement insight (30-50 words)",
-  "luckyTip": "A simple, actionable lucky tip for the day like 'Wear yellow for good fortune' or 'Donate food to attract blessings' or 'Touch an elder's feet before leaving home' (10-15 words max, must be practical and lucky)",
+  "luckyTip": "A SHORT lucky tip (5-8 words ONLY). Examples: 'Wear green today', 'Start day with warm water', 'Feed a cow for blessings', 'Keep tulsi leaf in wallet', 'Apply tilak before leaving home', 'Donate rice to the needy', 'Light a diya in evening'",
   "dos": ["3 things to do today"],
   "donts": ["3 things to avoid today"],
   "remedy": "A simple Vedic remedy for the day",
   "mantra": "A relevant Sanskrit mantra with translation"
 }
 
-Make the content unique, spiritually meaningful, and specific to ${signName}'s characteristics. The luckyTip must be a simple action that brings luck - like wearing a color, doing a small ritual, or a practical tip.`;
+IMPORTANT for luckyTip: Must be 5-8 words ONLY. Simple, actionable, relatable to Indian audience. Focus on: wearing lucky colors, morning rituals, small donations, temple visits, eating certain foods, simple pujas. No long sentences.`;
 
   const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
     method: "POST",

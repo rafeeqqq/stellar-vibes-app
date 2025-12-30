@@ -99,18 +99,24 @@ const focusAreas = [
 ];
 
 const luckyTips = [
-  "Wear red today for extra energy and confidence.",
-  "Donate food to someone in need for blessings.",
-  "Touch an elder's feet before leaving home.",
-  "Keep a yellow flower on your desk for luck.",
-  "Feed birds early morning for positive vibes.",
-  "Light a diya in the evening for prosperity.",
-  "Carry a green handkerchief for good fortune.",
-  "Offer water to a Tulsi plant for blessings.",
-  "Wear silver jewelry today for mental peace.",
-  "Share sweets with neighbors for harmony.",
-  "Keep a coin in your right pocket for wealth.",
-  "Apply tilak before important work today.",
+  "Wear green today",
+  "Start day with warm water",
+  "Feed a cow for blessings",
+  "Keep tulsi leaf in wallet",
+  "Apply tilak before leaving",
+  "Donate rice to the needy",
+  "Light a diya this evening",
+  "Touch elder's feet today",
+  "Offer water to Tulsi",
+  "Wear yellow for luck",
+  "Feed birds this morning",
+  "Keep lemon in pocket",
+  "Visit temple after sunset",
+  "Eat jaggery before work",
+  "Wear silver ring today",
+  "Share food with someone",
+  "Chant Om 11 times",
+  "Keep camphor in wallet",
 ];
 
 const loveTexts = [
