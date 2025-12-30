@@ -1,35 +1,58 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+const zodiacSigns = [
+  { id: 'aries', name: 'Aries', element: 'Fire', rulingPlanet: 'Mars' },
+  { id: 'taurus', name: 'Taurus', element: 'Earth', rulingPlanet: 'Venus' },
+  { id: 'gemini', name: 'Gemini', element: 'Air', rulingPlanet: 'Mercury' },
+  { id: 'cancer', name: 'Cancer', element: 'Water', rulingPlanet: 'Moon' },
+  { id: 'leo', name: 'Leo', element: 'Fire', rulingPlanet: 'Sun' },
+  { id: 'virgo', name: 'Virgo', element: 'Earth', rulingPlanet: 'Mercury' },
+  { id: 'libra', name: 'Libra', element: 'Air', rulingPlanet: 'Venus' },
+  { id: 'scorpio', name: 'Scorpio', element: 'Water', rulingPlanet: 'Mars' },
+  { id: 'sagittarius', name: 'Sagittarius', element: 'Fire', rulingPlanet: 'Jupiter' },
+  { id: 'capricorn', name: 'Capricorn', element: 'Earth', rulingPlanet: 'Saturn' },
+  { id: 'aquarius', name: 'Aquarius', element: 'Air', rulingPlanet: 'Saturn' },
+  { id: 'pisces', name: 'Pisces', element: 'Water', rulingPlanet: 'Jupiter' },
+];
 
-  try {
-    const { signId, signName, element, rulingPlanet } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
-    }
+function getDateString(offset: number = 0): string {
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return date.toISOString().split('T')[0];
+}
 
-    const today = new Date().toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      month: 'long', 
-      day: 'numeric',
-      year: 'numeric'
-    });
+function formatDateForPrompt(offset: number = 0): string {
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return date.toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    month: 'long', 
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
 
-    const systemPrompt = `You are an expert Vedic astrologer creating personalized daily horoscope readings. 
+async function generateHoroscopeForSign(
+  signId: string, 
+  signName: string, 
+  element: string, 
+  rulingPlanet: string,
+  dateOffset: number,
+  LOVABLE_API_KEY: string
+): Promise<any> {
+  const dateStr = formatDateForPrompt(dateOffset);
+  
+  const systemPrompt = `You are an expert Vedic astrologer creating personalized daily horoscope readings. 
 Generate authentic, insightful horoscope content that feels personal and meaningful.
 Always respond with valid JSON only, no markdown or extra text.`;
 
-    const userPrompt = `Generate a complete daily horoscope for ${signName} (${element} sign, ruled by ${rulingPlanet}) for ${today}.
+  const userPrompt = `Generate a complete daily horoscope for ${signName} (${element} sign, ruled by ${rulingPlanet}) for ${dateStr}.
 
 Return a JSON object with these exact fields:
 {
@@ -48,56 +71,162 @@ Return a JSON object with these exact fields:
 
 Make the content unique, spiritually meaningful, and specific to ${signName}'s characteristics.`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt },
-        ],
-      }),
-    });
+  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${LOVABLE_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "google/gemini-2.5-flash",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+    }),
+  });
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again later." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted. Please add credits." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      throw new Error("Failed to generate horoscope");
-    }
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`AI gateway error for ${signName}:`, response.status, errorText);
+    throw new Error(`Failed to generate horoscope for ${signName}`);
+  }
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
+  const data = await response.json();
+  const content = data.choices?.[0]?.message?.content;
+  
+  if (!content) {
+    throw new Error(`No content in AI response for ${signName}`);
+  }
+
+  // Parse the JSON from the response
+  const cleanContent = content.replace(/```json\n?|\n?```/g, '').trim();
+  return JSON.parse(cleanContent);
+}
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     
-    if (!content) {
-      throw new Error("No content in AI response");
+    if (!LOVABLE_API_KEY) {
+      throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    // Parse the JSON from the response
-    let horoscopeData;
-    try {
-      // Remove any markdown code blocks if present
-      const cleanContent = content.replace(/```json\n?|\n?```/g, '').trim();
-      horoscopeData = JSON.parse(cleanContent);
-    } catch (parseError) {
-      console.error("Failed to parse AI response:", content);
-      throw new Error("Invalid AI response format");
+    const body = await req.json();
+    const { signId, signName, element, rulingPlanet, batchGenerate, dayOffset } = body;
+
+    // Handle batch generation (for cron job)
+    if (batchGenerate) {
+      console.log("Starting batch horoscope generation...");
+      
+      if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+        throw new Error("Supabase credentials not configured");
+      }
+
+      const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+      const offsets = [-1, 0, 1]; // yesterday, today, tomorrow
+      let generated = 0;
+      let errors = 0;
+
+      for (const offset of offsets) {
+        const horoscopeDate = getDateString(offset);
+        
+        for (const sign of zodiacSigns) {
+          try {
+            // Check if already exists
+            const { data: existing } = await supabase
+              .from('horoscopes')
+              .select('id')
+              .eq('sign_id', sign.id)
+              .eq('horoscope_date', horoscopeDate)
+              .single();
+
+            if (existing) {
+              console.log(`Horoscope already exists for ${sign.name} on ${horoscopeDate}`);
+              continue;
+            }
+
+            console.log(`Generating horoscope for ${sign.name} on ${horoscopeDate}...`);
+            
+            const horoscopeData = await generateHoroscopeForSign(
+              sign.id,
+              sign.name,
+              sign.element,
+              sign.rulingPlanet,
+              offset,
+              LOVABLE_API_KEY
+            );
+
+            // Store in database
+            const { error: insertError } = await supabase
+              .from('horoscopes')
+              .upsert({
+                sign_id: sign.id,
+                horoscope_date: horoscopeDate,
+                general_reading: horoscopeData.generalReading,
+                love_text: horoscopeData.loveText,
+                career_text: horoscopeData.careerText,
+                money_text: horoscopeData.moneyText,
+                health_text: horoscopeData.healthText,
+                travel_text: horoscopeData.travelText,
+                daily_affirmation: horoscopeData.dailyAffirmation,
+                dos: horoscopeData.dos,
+                donts: horoscopeData.donts,
+                remedy: horoscopeData.remedy,
+                mantra: horoscopeData.mantra,
+              }, {
+                onConflict: 'sign_id,horoscope_date'
+              });
+
+            if (insertError) {
+              console.error(`Failed to store horoscope for ${sign.name}:`, insertError);
+              errors++;
+            } else {
+              generated++;
+              console.log(`Successfully stored horoscope for ${sign.name} on ${horoscopeDate}`);
+            }
+
+            // Small delay to avoid rate limiting
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+          } catch (signError) {
+            console.error(`Error generating horoscope for ${sign.name}:`, signError);
+            errors++;
+          }
+        }
+      }
+
+      console.log(`Batch generation complete. Generated: ${generated}, Errors: ${errors}`);
+      
+      return new Response(JSON.stringify({ 
+        success: true,
+        message: `Batch generation complete. Generated: ${generated}, Errors: ${errors}`,
+        generated,
+        errors
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
+
+    // Handle single sign generation (original behavior)
+    if (!signId || !signName) {
+      throw new Error("signId and signName are required");
+    }
+
+    const horoscopeData = await generateHoroscopeForSign(
+      signId,
+      signName,
+      element || 'Fire',
+      rulingPlanet || 'Sun',
+      dayOffset || 0,
+      LOVABLE_API_KEY
+    );
 
     return new Response(JSON.stringify({ 
       success: true, 
