@@ -4,7 +4,7 @@ import { SignPicker } from '@/components/horoscope/SignPicker';
 import { DayTabs } from '@/components/horoscope/DayTabs';
 import { MainHoroscopeCard } from '@/components/horoscope/MainHoroscopeCard';
 import { DailyReadingCard } from '@/components/horoscope/DailyReadingCard';
-import { AffirmationCard } from '@/components/horoscope/AffirmationCard';
+import { LuckyTipCard } from '@/components/horoscope/LuckyTipCard';
 import { CombinedScoresCard } from '@/components/horoscope/CombinedScoresCard';
 import { ActionButtons } from '@/components/horoscope/ActionButtons';
 import { StarField } from '@/components/horoscope/StarField';
@@ -117,8 +117,8 @@ const Index = () => {
             travelText={horoscope.travelText}
           />
 
-          {/* Daily Affirmation - moved to bottom */}
-          <AffirmationCard affirmation={horoscope.dailyAffirmation} signColor={sign.color} />
+          {/* Lucky Tip */}
+          <LuckyTipCard tip={horoscope.dailyAffirmation} signColor={sign.color} />
         </motion.div>
       </AnimatePresence>
 

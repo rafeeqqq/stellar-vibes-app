@@ -62,14 +62,14 @@ Return a JSON object with these exact fields:
   "moneyText": "A specific financial/money insight (30-50 words)",
   "healthText": "A specific health/wellness insight (30-50 words)",
   "travelText": "A specific travel/movement insight (30-50 words)",
-  "dailyAffirmation": "A powerful affirmation for the day (15-25 words)",
+  "luckyTip": "A simple, actionable lucky tip for the day like 'Wear yellow for good fortune' or 'Donate food to attract blessings' or 'Touch an elder's feet before leaving home' (10-15 words max, must be practical and lucky)",
   "dos": ["3 things to do today"],
   "donts": ["3 things to avoid today"],
   "remedy": "A simple Vedic remedy for the day",
   "mantra": "A relevant Sanskrit mantra with translation"
 }
 
-Make the content unique, spiritually meaningful, and specific to ${signName}'s characteristics.`;
+Make the content unique, spiritually meaningful, and specific to ${signName}'s characteristics. The luckyTip must be a simple action that brings luck - like wearing a color, doing a small ritual, or a practical tip.`;
 
   const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
     method: "POST",
@@ -175,7 +175,7 @@ serve(async (req) => {
                 money_text: horoscopeData.moneyText,
                 health_text: horoscopeData.healthText,
                 travel_text: horoscopeData.travelText,
-                daily_affirmation: horoscopeData.dailyAffirmation,
+                daily_affirmation: horoscopeData.luckyTip,
                 dos: horoscopeData.dos,
                 donts: horoscopeData.donts,
                 remedy: horoscopeData.remedy,

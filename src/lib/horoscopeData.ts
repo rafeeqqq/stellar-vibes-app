@@ -98,19 +98,19 @@ const focusAreas = [
   { area: 'Spirituality', emoji: '🙏' },
 ];
 
-const affirmations = [
-  "I am worthy of all the beautiful things the universe has in store for me.",
-  "Today I choose joy, abundance, and positive energy.",
-  "I trust the journey and embrace each moment with gratitude.",
-  "My inner light shines brightly and attracts wonderful opportunities.",
-  "I am aligned with my highest purpose and deepest intentions.",
-  "Every challenge is an opportunity for growth and transformation.",
-  "I radiate confidence, love, and positive energy wherever I go.",
-  "I am open to receiving all the blessings the cosmos offers today.",
-  "My intuition guides me towards my greatest good.",
-  "I am surrounded by love, support, and cosmic protection.",
-  "Today I manifest my dreams with clarity and intention.",
-  "I embrace change as a pathway to my highest potential.",
+const luckyTips = [
+  "Wear red today for extra energy and confidence.",
+  "Donate food to someone in need for blessings.",
+  "Touch an elder's feet before leaving home.",
+  "Keep a yellow flower on your desk for luck.",
+  "Feed birds early morning for positive vibes.",
+  "Light a diya in the evening for prosperity.",
+  "Carry a green handkerchief for good fortune.",
+  "Offer water to a Tulsi plant for blessings.",
+  "Wear silver jewelry today for mental peace.",
+  "Share sweets with neighbors for harmony.",
+  "Keep a coin in your right pocket for wealth.",
+  "Apply tilak before important work today.",
 ];
 
 const loveTexts = [
@@ -269,7 +269,7 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
   const moneyTextIndex = Math.floor(random() * moneyTexts.length);
   const healthTextIndex = Math.floor(random() * healthTexts.length);
   const travelTextIndex = Math.floor(random() * travelTexts.length);
-  const affirmationIndex = Math.floor(random() * affirmations.length);
+  const luckyTipIndex = Math.floor(random() * luckyTips.length);
   const focusIndex = Math.floor(random() * focusAreas.length);
   const nakshatraIndex = Math.floor(random() * nakshatras.length);
   const tithiIndex = Math.floor(random() * tithis.length);
@@ -305,7 +305,7 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
     travelPercentage: Math.floor(random() * 40) + 60,
     travelText: travelTexts[travelTextIndex],
     generalReading: `The celestial alignment today brings ${moods[moodIndex].toLowerCase()} energy to your ${zodiacSigns.find(s => s.id === signId)?.element || 'cosmic'} nature. Trust in the cosmic flow and embrace the opportunities that come your way. Your ruling planet ${zodiacSigns.find(s => s.id === signId)?.rulingPlanet || 'guides'} you towards success and fulfillment.`,
-    dailyAffirmation: affirmations[affirmationIndex],
+    dailyAffirmation: luckyTips[luckyTipIndex],
     compatibleSign: compatibleSign?.name || 'Leo',
     avoidSign: avoidSign?.name || 'Capricorn',
     focusArea: focusAreas[focusIndex].area,
