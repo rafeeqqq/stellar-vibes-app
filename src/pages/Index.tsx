@@ -123,8 +123,12 @@ const Index = () => {
             loveText={horoscope.loveText}
             careerPercentage={horoscope.careerPercentage}
             careerText={horoscope.careerText}
+            moneyPercentage={horoscope.moneyPercentage}
+            moneyText={horoscope.moneyText}
             healthPercentage={horoscope.healthPercentage}
             healthText={horoscope.healthText}
+            travelPercentage={horoscope.travelPercentage}
+            travelText={horoscope.travelText}
           />
 
           {/* Daily Affirmation - moved to bottom */}

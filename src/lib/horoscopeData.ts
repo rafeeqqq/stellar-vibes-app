@@ -22,8 +22,12 @@ export interface HoroscopeData {
   loveText: string;
   careerPercentage: number;
   careerText: string;
+  moneyPercentage: number;
+  moneyText: string;
   healthPercentage: number;
   healthText: string;
+  travelPercentage: number;
+  travelText: string;
   generalReading: string;
   dailyAffirmation: string;
   compatibleSign: string;
@@ -142,6 +146,28 @@ const healthTexts = [
   "Your healing energy is amplified. Focus on recovery and gentle self-care practices.",
 ];
 
+const moneyTexts = [
+  "Financial abundance flows toward you today. Trust your instincts on investment opportunities.",
+  "A surprise monetary gain may come your way. Stay open to unexpected sources of income.",
+  "Your financial planning pays off now. Review your budget and make strategic adjustments.",
+  "Avoid impulsive spending today. Focus on long-term wealth building strategies.",
+  "New income streams are opening up. Explore side ventures or passive income ideas.",
+  "Your money manifestation energy is strong. Visualize abundance and it shall come.",
+  "Smart financial decisions made today will yield significant returns in the future.",
+  "Generosity attracts prosperity. Share your blessings and watch them multiply.",
+];
+
+const travelTexts = [
+  "The stars favor short trips and spontaneous adventures. Pack your bags and explore!",
+  "A journey to the east or north may bring unexpected blessings and new connections.",
+  "Travel plans made today will unfold smoothly. Book that trip you've been dreaming of.",
+  "Local exploration is favored. Discover hidden gems in your own neighborhood today.",
+  "An overseas opportunity may present itself. Keep your passport ready for adventure.",
+  "Road trips with loved ones will create lasting memories. Hit the open road!",
+  "Spiritual pilgrimages are highly auspicious now. Visit a sacred place for blessings.",
+  "Travel delays may occur. Practice patience and see them as opportunities for reflection.",
+];
+
 // New enhanced data arrays
 const dosArrays = [
   ["Start new ventures", "Wear bright colors", "Connect with family"],
@@ -240,7 +266,9 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
   const colorSetIndex = Math.floor(random() * luckyColorSets.length);
   const loveTextIndex = Math.floor(random() * loveTexts.length);
   const careerTextIndex = Math.floor(random() * careerTexts.length);
+  const moneyTextIndex = Math.floor(random() * moneyTexts.length);
   const healthTextIndex = Math.floor(random() * healthTexts.length);
+  const travelTextIndex = Math.floor(random() * travelTexts.length);
   const affirmationIndex = Math.floor(random() * affirmations.length);
   const focusIndex = Math.floor(random() * focusAreas.length);
   const nakshatraIndex = Math.floor(random() * nakshatras.length);
@@ -270,8 +298,12 @@ export function getHoroscopeData(signId: string, dayOffset: number = 0): Horosco
     loveText: loveTexts[loveTextIndex],
     careerPercentage: Math.floor(random() * 40) + 60,
     careerText: careerTexts[careerTextIndex],
+    moneyPercentage: Math.floor(random() * 40) + 60,
+    moneyText: moneyTexts[moneyTextIndex],
     healthPercentage: Math.floor(random() * 40) + 60,
     healthText: healthTexts[healthTextIndex],
+    travelPercentage: Math.floor(random() * 40) + 60,
+    travelText: travelTexts[travelTextIndex],
     generalReading: `The celestial alignment today brings ${moods[moodIndex].toLowerCase()} energy to your ${zodiacSigns.find(s => s.id === signId)?.element || 'cosmic'} nature. Trust in the cosmic flow and embrace the opportunities that come your way. Your ruling planet ${zodiacSigns.find(s => s.id === signId)?.rulingPlanet || 'guides'} you towards success and fulfillment.`,
     dailyAffirmation: affirmations[affirmationIndex],
     compatibleSign: compatibleSign?.name || 'Leo',
