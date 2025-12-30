@@ -81,7 +81,7 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
           whileTap={{ scale: 0.98 }}
         >
           <span className="text-lg sm:text-xl font-serif text-primary block">{horoscope.luckyNumber}</span>
-          <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wide">Lucky #</p>
+          <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase tracking-wide">Lucky Number</p>
         </motion.div>
 
         {/* Lucky Time */}
