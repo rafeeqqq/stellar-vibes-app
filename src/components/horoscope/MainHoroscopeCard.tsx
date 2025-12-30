@@ -1,34 +1,6 @@
 import { motion } from 'framer-motion';
 import { ZodiacSign, HoroscopeData } from '@/lib/horoscopeData';
 
-// Import zodiac images
-import ariesImg from '@/assets/zodiac/aries.png';
-import taurusImg from '@/assets/zodiac/taurus.png';
-import geminiImg from '@/assets/zodiac/gemini.png';
-import cancerImg from '@/assets/zodiac/cancer.png';
-import leoImg from '@/assets/zodiac/leo.png';
-import virgoImg from '@/assets/zodiac/virgo.png';
-import libraImg from '@/assets/zodiac/libra.png';
-import scorpioImg from '@/assets/zodiac/scorpio.png';
-import sagittariusImg from '@/assets/zodiac/sagittarius.png';
-import capricornImg from '@/assets/zodiac/capricorn.png';
-import aquariusImg from '@/assets/zodiac/aquarius.png';
-import piscesImg from '@/assets/zodiac/pisces.png';
-
-const zodiacImages: Record<string, string> = {
-  aries: ariesImg,
-  taurus: taurusImg,
-  gemini: geminiImg,
-  cancer: cancerImg,
-  leo: leoImg,
-  virgo: virgoImg,
-  libra: libraImg,
-  scorpio: scorpioImg,
-  sagittarius: sagittariusImg,
-  capricorn: capricornImg,
-  aquarius: aquariusImg,
-  pisces: piscesImg,
-};
 interface MainHoroscopeCardProps {
   sign: ZodiacSign;
   horoscope: HoroscopeData;
@@ -48,33 +20,19 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
         className="rounded-2xl sm:rounded-3xl p-4 sm:p-5 relative overflow-hidden bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/20 border border-primary/15 shadow-lg"
       >
         {/* Header */}
-        <div className="flex items-center gap-3 mb-4 relative z-10">
-          {/* Zodiac Symbol */}
-          <motion.div 
-            className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center flex-shrink-0 bg-white/80 border border-primary/20 p-2"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img 
-              src={zodiacImages[sign.id]} 
-              alt={sign.name}
-              className="w-full h-full object-contain"
-            />
-          </motion.div>
-
-          {/* Sign Details */}
-          <div className="flex-1 min-w-0">
-            <h2 className="font-serif text-xl sm:text-2xl font-semibold text-primary">
-              {sign.name}
-            </h2>
-            <p className="font-hindi text-sm sm:text-base text-primary/70">
+        <div className="flex items-center justify-between mb-4 relative z-10">
+          {/* Sign Details - Left */}
+          <div className="flex-1">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-primary">
               {sign.hindiName} राशि
+            </h2>
+            <p className="text-sm sm:text-base text-primary/70 font-medium">
+              {sign.name}
             </p>
-            <p className="text-xs text-muted-foreground">{sign.dateRange}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{sign.dateRange}</p>
           </div>
 
-          {/* Mood */}
+          {/* Mood - Right */}
           <div className="text-center flex-shrink-0 rounded-xl p-2.5 sm:p-3 bg-white/60 border border-primary/10">
             <span className="text-xl sm:text-2xl block">{horoscope.moodEmoji}</span>
             <p className="text-[8px] sm:text-[10px] text-muted-foreground uppercase mt-0.5">Mood</p>
