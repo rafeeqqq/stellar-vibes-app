@@ -66,25 +66,6 @@ function ScoreItem({
         {text}
       </p>
 
-      {/* Additional insight tip */}
-      <div 
-        className="mt-3 pt-3"
-        style={{ borderTop: `1px solid ${borderColor}` }}
-      >
-        <p 
-          className="text-xs sm:text-sm font-medium"
-          style={{ color: accentColor }}
-        >
-          {percentage >= 80 
-            ? `Excellent energy for ${label.toLowerCase()} matters today!`
-            : percentage >= 60 
-            ? `Good prospects ahead. Stay positive and proactive.`
-            : percentage >= 40
-            ? `Room for growth. Focus on small, meaningful steps.`
-            : `Take it easy. Self-reflection brings clarity.`
-          }
-        </p>
-      </div>
     </motion.div>
   );
 }
