@@ -46,10 +46,9 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
       whileTap={{ scale: 0.95 }}
       style={{ WebkitTapHighlightColor: 'transparent' }}
       animate={{
-        opacity: isSelected ? 1 : 0.55,
-        scale: isSelected ? 1 : 0.88,
-        y: isSelected ? -4 : 0,
-        filter: isSelected ? 'blur(0px)' : 'blur(0.5px)',
+        opacity: isSelected ? 1 : 0.85,
+        scale: isSelected ? 1 : 0.92,
+        y: isSelected ? -3 : 0,
       }}
       transition={{
         type: 'spring',
