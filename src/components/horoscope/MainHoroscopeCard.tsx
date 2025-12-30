@@ -40,6 +40,17 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
           </div>
         </div>
 
+        {/* Decorative Divider */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          <div className="flex gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+            <span className="w-1.5 h-1.5 rounded-full bg-primary/60" />
+            <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+          </div>
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        </div>
+
         {/* Stats Grid */}
         <div className="grid grid-cols-3 gap-2">
           {/* Lucky Number */}
