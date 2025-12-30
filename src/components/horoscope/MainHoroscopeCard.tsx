@@ -19,6 +19,18 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
       <div 
         className="rounded-2xl sm:rounded-3xl p-4 sm:p-5 relative overflow-hidden bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/20 border border-primary/15 shadow-lg"
       >
+        {/* Decorative Corners */}
+        <div className="absolute top-2 left-2 w-6 h-6 border-l-2 border-t-2 border-primary/30 rounded-tl-lg" />
+        <div className="absolute top-2 right-2 w-6 h-6 border-r-2 border-t-2 border-primary/30 rounded-tr-lg" />
+        <div className="absolute bottom-2 left-2 w-6 h-6 border-l-2 border-b-2 border-primary/30 rounded-bl-lg" />
+        <div className="absolute bottom-2 right-2 w-6 h-6 border-r-2 border-b-2 border-primary/30 rounded-br-lg" />
+        
+        {/* Corner Dots */}
+        <div className="absolute top-3 left-3 w-1.5 h-1.5 rounded-full bg-primary/40" />
+        <div className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-primary/40" />
+        <div className="absolute bottom-3 left-3 w-1.5 h-1.5 rounded-full bg-primary/40" />
+        <div className="absolute bottom-3 right-3 w-1.5 h-1.5 rounded-full bg-primary/40" />
+
         {/* Header */}
         <div className="flex items-center justify-between mb-4 relative z-10">
           {/* Sign Details - Left */}
