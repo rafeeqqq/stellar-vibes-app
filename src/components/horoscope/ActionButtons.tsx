@@ -8,7 +8,7 @@ export function ActionButtons() {
 
   return (
     <motion.div 
-      className="fixed bottom-0 left-0 right-0 p-3 sm:p-4 pb-5 sm:pb-6 bg-gradient-to-t from-background via-background/98 to-transparent backdrop-blur-sm"
+      className="fixed bottom-0 left-0 right-0 z-50 p-3 sm:p-4 pb-5 sm:pb-6 bg-gradient-to-t from-background via-background to-background/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.1)]"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.5, duration: 0.4 }}
