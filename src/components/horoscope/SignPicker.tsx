@@ -24,9 +24,14 @@ export function SignPicker({ selectedSign, onSelectSign }: SignPickerProps) {
 
   useEffect(() => {
     if (scrollRef.current) {
-      const selectedIndex = zodiacSigns.findIndex(s => s.id === selectedSign);
-      const scrollAmount = selectedIndex * 84 - (scrollRef.current.clientWidth / 2) + 42;
-      scrollRef.current.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+      const selectedElement = scrollRef.current.querySelector(`[data-sign="${selectedSign}"]`) as HTMLElement;
+      if (selectedElement) {
+        const containerWidth = scrollRef.current.clientWidth;
+        const elementLeft = selectedElement.offsetLeft;
+        const elementWidth = selectedElement.offsetWidth;
+        const scrollAmount = elementLeft - (containerWidth / 2) + (elementWidth / 2);
+        scrollRef.current.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+      }
     }
   }, [selectedSign]);
 
@@ -99,6 +104,7 @@ export function SignPicker({ selectedSign, onSelectSign }: SignPickerProps) {
         {zodiacSigns.map((sign, index) => (
           <motion.div
             key={sign.id}
+            data-sign={sign.id}
             className="snap-center flex-shrink-0"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
