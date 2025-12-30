@@ -10,6 +10,19 @@ interface DailyReadingCardProps {
   shubhMuhurat: string;
   remedy: string;
   mantra: string;
+  dayOffset?: number;
+}
+
+function getReadingTitle(dayOffset: number): string {
+  if (dayOffset === -1) return "Yesterday's Reading";
+  if (dayOffset === 1) return "Tomorrow's Reading";
+  return "Today's Reading";
+}
+
+function getRemedyTitle(dayOffset: number): string {
+  if (dayOffset === -1) return "Yesterday's Remedy";
+  if (dayOffset === 1) return "Tomorrow's Remedy";
+  return "Today's Remedy";
 }
 
 export function DailyReadingCard({
@@ -20,7 +33,11 @@ export function DailyReadingCard({
   shubhMuhurat,
   remedy,
   mantra,
+  dayOffset = 0,
 }: DailyReadingCardProps) {
+  const readingTitle = getReadingTitle(dayOffset);
+  const remedyTitle = getRemedyTitle(dayOffset);
+
   return (
     <motion.div
       className="mx-3 sm:mx-4 rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-white/90 backdrop-blur-sm border border-primary/10 shadow-lg"
@@ -33,7 +50,7 @@ export function DailyReadingCard({
         <div className="flex items-center gap-2 mb-2">
           <BookOpen className="w-5 h-5 text-primary" />
           <h3 className="font-sans text-lg sm:text-xl font-bold bg-gradient-to-r from-primary via-purple-500 to-primary bg-clip-text text-transparent">
-            Today's Reading
+            {readingTitle}
           </h3>
         </div>
         <p className="text-sm sm:text-base text-foreground/80 leading-relaxed">
@@ -111,7 +128,7 @@ export function DailyReadingCard({
         <div className="rounded-xl p-3 bg-purple-500/10 border border-purple-500/20">
           <div className="flex items-center gap-1.5 mb-1">
             <Sparkles className="w-4 h-4 text-purple-600" />
-            <span className="text-xs sm:text-sm font-semibold text-purple-700">Today's Remedy</span>
+            <span className="text-xs sm:text-sm font-semibold text-purple-700">{remedyTitle}</span>
           </div>
           <p className="text-[10px] sm:text-xs text-foreground/80">{remedy}</p>
         </div>
