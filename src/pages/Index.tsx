@@ -116,6 +116,7 @@ const Index = () => {
             shubhMuhurat={horoscope.shubhMuhurat}
             remedy={horoscope.remedy}
             mantra={horoscope.mantra}
+            dayOffset={dayOffset}
           />
 
           {/* Daily Insights - moved up */}
