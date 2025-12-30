@@ -8,7 +8,8 @@ import { AffirmationCard } from '@/components/horoscope/AffirmationCard';
 import { CombinedScoresCard } from '@/components/horoscope/CombinedScoresCard';
 import { ActionButtons } from '@/components/horoscope/ActionButtons';
 import { StarField } from '@/components/horoscope/StarField';
-import { zodiacSigns, getHoroscopeData } from '@/lib/horoscopeData';
+import { zodiacSigns } from '@/lib/horoscopeData';
+import { useAIHoroscope } from '@/hooks/useAIHoroscope';
 import astrolokalLogo from '@/assets/astrolokal-logo.png';
 
 const getGreeting = () => {
@@ -34,7 +35,7 @@ const Index = () => {
 
   const dayOffset = activeDay === 'yesterday' ? -1 : activeDay === 'tomorrow' ? 1 : 0;
   const sign = zodiacSigns.find(s => s.id === selectedSign) || zodiacSigns[0];
-  const horoscope = getHoroscopeData(selectedSign, dayOffset);
+  const { horoscope, isLoading, isAIPowered } = useAIHoroscope(sign, dayOffset);
 
   const greeting = useMemo(() => getGreeting(), []);
   const currentDate = useMemo(() => formatDate(dayOffset), [dayOffset]);
