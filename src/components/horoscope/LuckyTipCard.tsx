@@ -48,14 +48,14 @@ export function LuckyTipCard({ tip, signColor }: LuckyTipCardProps) {
           <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: accentColor }} />
         </motion.div>
         
-        <div className="flex-1 min-w-0">
+        <div className="flex-1">
           <p 
             className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-0.5"
             style={{ color: accentColor }}
           >
             ✨ Lucky Tip
           </p>
-          <p className="text-sm sm:text-base font-medium text-foreground truncate">
+          <p className="text-sm sm:text-base font-medium text-foreground leading-snug">
             {tip}
           </p>
         </div>
