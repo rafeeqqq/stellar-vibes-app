@@ -43,17 +43,33 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
     <motion.button
       onClick={onClick}
       className="flex flex-col items-center gap-1.5 sm:gap-2 min-w-[68px] sm:min-w-[80px] touch-manipulation select-none"
-      whileTap={{ scale: 0.9 }}
+      whileTap={{ scale: 0.95 }}
       style={{ WebkitTapHighlightColor: 'transparent' }}
+      animate={{
+        opacity: isSelected ? 1 : 0.55,
+        scale: isSelected ? 1 : 0.88,
+        y: isSelected ? -4 : 0,
+        filter: isSelected ? 'blur(0px)' : 'blur(0.5px)',
+      }}
+      transition={{
+        type: 'spring',
+        stiffness: 300,
+        damping: 25,
+      }}
     >
       <motion.div
         className={`relative w-14 h-14 sm:w-[72px] sm:h-[72px] rounded-full flex items-center justify-center transition-all duration-300 ${
           isSelected 
             ? 'ring-[3px] ring-primary shadow-lg animate-breathe' 
-            : 'ring-2 ring-border hover:ring-primary/50'
+            : 'ring-2 ring-border/50 hover:ring-primary/50'
         }`}
         animate={{
           scale: isSelected ? 1.08 : 1,
+        }}
+        transition={{
+          type: 'spring',
+          stiffness: 400,
+          damping: 20,
         }}
         style={{
           background: isSelected 
