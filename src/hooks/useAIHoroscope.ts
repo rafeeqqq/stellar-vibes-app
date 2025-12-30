@@ -3,55 +3,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { ZodiacSign, HoroscopeData, getHoroscopeData } from '@/lib/horoscopeData';
 import { useToast } from '@/hooks/use-toast';
 
-const CACHE_KEY_PREFIX = 'horoscope_cache_';
-const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-interface CachedHoroscope {
-  data: Partial<HoroscopeData>;
-  timestamp: number;
-  date: string;
-}
-
-function getTodayString(): string {
-  return new Date().toISOString().split('T')[0];
-}
-
-function getCacheKey(signId: string): string {
-  return `${CACHE_KEY_PREFIX}${signId}`;
-}
-
-function getFromCache(signId: string): Partial<HoroscopeData> | null {
-  try {
-    const cached = localStorage.getItem(getCacheKey(signId));
-    if (!cached) return null;
-    
-    const parsed: CachedHoroscope = JSON.parse(cached);
-    const today = getTodayString();
-    
-    // Check if cache is from today and not expired
-    if (parsed.date === today && Date.now() - parsed.timestamp < CACHE_DURATION) {
-      return parsed.data;
-    }
-    
-    // Clear expired cache
-    localStorage.removeItem(getCacheKey(signId));
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-function saveToCache(signId: string, data: Partial<HoroscopeData>): void {
-  try {
-    const cached: CachedHoroscope = {
-      data,
-      timestamp: Date.now(),
-      date: getTodayString(),
-    };
-    localStorage.setItem(getCacheKey(signId), JSON.stringify(cached));
-  } catch (error) {
-    console.error('Failed to cache horoscope:', error);
-  }
+function getDateString(offset: number = 0): string {
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return date.toISOString().split('T')[0];
 }
 
 export function useAIHoroscope(sign: ZodiacSign, dayOffset: number = 0) {
@@ -68,70 +23,81 @@ export function useAIHoroscope(sign: ZodiacSign, dayOffset: number = 0) {
     setHoroscope(fallbackData);
     setIsAIPowered(false);
 
-    // Only fetch AI data for today
-    if (dayOffset !== 0) return;
-
-    // Check cache first
-    const cachedData = getFromCache(sign.id);
-    if (cachedData) {
-      setHoroscope(prev => ({ ...prev, ...cachedData }));
-      setIsAIPowered(true);
-      return;
-    }
-
-    // Fetch fresh AI-generated horoscope
-    const fetchAIHoroscope = async () => {
+    // Fetch from database for yesterday, today, tomorrow
+    const fetchStoredHoroscope = async () => {
       setIsLoading(true);
       try {
-        const { data, error } = await supabase.functions.invoke('generate-horoscope', {
-          body: {
-            signId: sign.id,
-            signName: sign.name,
-            element: sign.element,
-            rulingPlanet: sign.rulingPlanet,
-          },
-        });
+        const horoscopeDate = getDateString(dayOffset);
+        
+        // Try to get from database first
+        const { data: storedHoroscope, error } = await supabase
+          .from('horoscopes')
+          .select('*')
+          .eq('sign_id', sign.id)
+          .eq('horoscope_date', horoscopeDate)
+          .single();
 
-        if (error) {
-          throw error;
-        }
-
-        if (data?.success && data?.data) {
-          const aiData = data.data;
-          
-          // Merge AI data with fallback data
-          const mergedData: Partial<HoroscopeData> = {
-            generalReading: aiData.generalReading || fallbackData.generalReading,
-            loveText: aiData.loveText || fallbackData.loveText,
-            careerText: aiData.careerText || fallbackData.careerText,
-            moneyText: aiData.moneyText || fallbackData.moneyText,
-            healthText: aiData.healthText || fallbackData.healthText,
-            travelText: aiData.travelText || fallbackData.travelText,
-            dailyAffirmation: aiData.dailyAffirmation || fallbackData.dailyAffirmation,
-            dos: aiData.dos || fallbackData.dos,
-            donts: aiData.donts || fallbackData.donts,
-            remedy: aiData.remedy || fallbackData.remedy,
-            mantra: aiData.mantra || fallbackData.mantra,
+        if (storedHoroscope && !error) {
+          // Use stored AI-generated horoscope
+          const aiData: Partial<HoroscopeData> = {
+            generalReading: storedHoroscope.general_reading || fallbackData.generalReading,
+            loveText: storedHoroscope.love_text || fallbackData.loveText,
+            careerText: storedHoroscope.career_text || fallbackData.careerText,
+            moneyText: storedHoroscope.money_text || fallbackData.moneyText,
+            healthText: storedHoroscope.health_text || fallbackData.healthText,
+            travelText: storedHoroscope.travel_text || fallbackData.travelText,
+            dailyAffirmation: storedHoroscope.daily_affirmation || fallbackData.dailyAffirmation,
+            dos: storedHoroscope.dos || fallbackData.dos,
+            donts: storedHoroscope.donts || fallbackData.donts,
+            remedy: storedHoroscope.remedy || fallbackData.remedy,
+            mantra: storedHoroscope.mantra || fallbackData.mantra,
           };
 
-          saveToCache(sign.id, mergedData);
-          setHoroscope(prev => ({ ...prev, ...mergedData }));
+          setHoroscope(prev => ({ ...prev, ...aiData }));
           setIsAIPowered(true);
+          return;
+        }
+
+        // If no stored data and it's today, try to generate on-demand
+        if (dayOffset === 0) {
+          const { data, error: genError } = await supabase.functions.invoke('generate-horoscope', {
+            body: {
+              signId: sign.id,
+              signName: sign.name,
+              element: sign.element,
+              rulingPlanet: sign.rulingPlanet,
+              dayOffset: 0,
+            },
+          });
+
+          if (data?.success && data?.data) {
+            const aiData = data.data;
+            
+            const mergedData: Partial<HoroscopeData> = {
+              generalReading: aiData.generalReading || fallbackData.generalReading,
+              loveText: aiData.loveText || fallbackData.loveText,
+              careerText: aiData.careerText || fallbackData.careerText,
+              moneyText: aiData.moneyText || fallbackData.moneyText,
+              healthText: aiData.healthText || fallbackData.healthText,
+              travelText: aiData.travelText || fallbackData.travelText,
+              dailyAffirmation: aiData.dailyAffirmation || fallbackData.dailyAffirmation,
+              dos: aiData.dos || fallbackData.dos,
+              donts: aiData.donts || fallbackData.donts,
+              remedy: aiData.remedy || fallbackData.remedy,
+              mantra: aiData.mantra || fallbackData.mantra,
+            };
+
+            setHoroscope(prev => ({ ...prev, ...mergedData }));
+            setIsAIPowered(true);
+          }
         }
       } catch (error: any) {
-        console.error('Failed to fetch AI horoscope:', error);
+        console.error('Failed to fetch horoscope:', error);
         
-        // Show toast for rate limit errors
         if (error?.status === 429) {
           toast({
             title: "Rate limit reached",
-            description: "Using cached predictions. Try again later.",
-            variant: "destructive",
-          });
-        } else if (error?.status === 402) {
-          toast({
-            title: "AI credits exhausted",
-            description: "Using local predictions.",
+            description: "Using local predictions. Try again later.",
             variant: "destructive",
           });
         }
@@ -141,7 +107,7 @@ export function useAIHoroscope(sign: ZodiacSign, dayOffset: number = 0) {
       }
     };
 
-    fetchAIHoroscope();
+    fetchStoredHoroscope();
   }, [sign.id, sign.name, sign.element, sign.rulingPlanet, dayOffset, toast]);
 
   return { horoscope, isLoading, isAIPowered };

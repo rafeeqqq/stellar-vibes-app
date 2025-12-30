@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      horoscopes: {
+        Row: {
+          career_text: string | null
+          created_at: string
+          daily_affirmation: string | null
+          donts: string[] | null
+          dos: string[] | null
+          general_reading: string | null
+          health_text: string | null
+          horoscope_date: string
+          id: string
+          love_text: string | null
+          mantra: string | null
+          money_text: string | null
+          remedy: string | null
+          sign_id: string
+          travel_text: string | null
+          updated_at: string
+        }
+        Insert: {
+          career_text?: string | null
+          created_at?: string
+          daily_affirmation?: string | null
+          donts?: string[] | null
+          dos?: string[] | null
+          general_reading?: string | null
+          health_text?: string | null
+          horoscope_date: string
+          id?: string
+          love_text?: string | null
+          mantra?: string | null
+          money_text?: string | null
+          remedy?: string | null
+          sign_id: string
+          travel_text?: string | null
+          updated_at?: string
+        }
+        Update: {
+          career_text?: string | null
+          created_at?: string
+          daily_affirmation?: string | null
+          donts?: string[] | null
+          dos?: string[] | null
+          general_reading?: string | null
+          health_text?: string | null
+          horoscope_date?: string
+          id?: string
+          love_text?: string | null
+          mantra?: string | null
+          money_text?: string | null
+          remedy?: string | null
+          sign_id?: string
+          travel_text?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
