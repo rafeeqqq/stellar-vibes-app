@@ -12,13 +12,6 @@ import { zodiacSigns } from '@/lib/horoscopeData';
 import { useAIHoroscope } from '@/hooks/useAIHoroscope';
 import astrolokalLogo from '@/assets/astrolokal-logo.png';
 
-const getGreeting = () => {
-  const hour = new Date().getHours();
-  if (hour < 12) return 'Good Morning';
-  if (hour < 17) return 'Good Afternoon';
-  return 'Good Evening';
-};
-
 const formatDate = (offset: number) => {
   const date = new Date();
   date.setDate(date.getDate() + offset);
@@ -37,7 +30,6 @@ const Index = () => {
   const sign = zodiacSigns.find(s => s.id === selectedSign) || zodiacSigns[0];
   const { horoscope, isLoading, isAIPowered } = useAIHoroscope(sign, dayOffset);
 
-  const greeting = useMemo(() => getGreeting(), []);
   const currentDate = useMemo(() => formatDate(dayOffset), [dayOffset]);
 
   return (
@@ -52,14 +44,6 @@ const Index = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <motion.p 
-          className="text-primary/80 text-xs sm:text-sm font-medium mb-1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          {greeting} ✨
-        </motion.p>
         <div className="flex items-center justify-center mb-1">
           <div className="shimmer-effect rounded-lg">
             <img 
@@ -70,7 +54,7 @@ const Index = () => {
           </div>
         </div>
         <p className="text-muted-foreground text-xs sm:text-sm">
-          Your Daily Horoscope
+          आपका दैनिक राशिफल
         </p>
       </motion.header>
 
