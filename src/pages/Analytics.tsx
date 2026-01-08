@@ -64,8 +64,8 @@ export default function Analytics() {
   const fetchAnalytics = async (daysToFetch: number) => {
     setLoading(true);
     try {
-      const { data: result, error } = await supabase.functions.invoke(`analytics-summary?days=${daysToFetch}`, {
-        method: 'GET',
+      const { data: result, error } = await supabase.functions.invoke('analytics-summary', {
+        body: { days: daysToFetch },
       });
       
       if (error) throw error;

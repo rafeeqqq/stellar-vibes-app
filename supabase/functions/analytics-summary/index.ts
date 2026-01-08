@@ -17,8 +17,18 @@ Deno.serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Support both query params and body
     const url = new URL(req.url);
-    const days = parseInt(url.searchParams.get('days') || '7');
+    let days = parseInt(url.searchParams.get('days') || '7');
+    
+    // Check body for days if not in query params
+    if (req.method === 'POST') {
+      try {
+        const body = await req.json();
+        if (body.days) days = parseInt(body.days);
+      } catch {}
+    }
+    
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
 
