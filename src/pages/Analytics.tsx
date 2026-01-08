@@ -63,7 +63,7 @@ export default function Analytics() {
   const [data, setData] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [days, setDays] = useState(7);
+  const [days, setDays] = useState(0); // 0=today, 1=yesterday, 7=last 7 days
 
   const fetchAnalytics = async (daysToFetch: number) => {
     setLoading(true);
@@ -118,13 +118,10 @@ export default function Analytics() {
   const conversionRate = parseFloat(data?.totals.conversion_rate || '0');
   const totalEvents = data?.totals.events || 0;
 
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const getPeriodLabel = () => {
+    if (days === 0) return "Today";
+    if (days === 1) return "Yesterday";
+    return "Last 7 Days";
   };
 
   return (
@@ -157,12 +154,8 @@ export default function Analytics() {
                 <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-orange-400 flex-shrink-0" />
                 <span className="truncate">Analytics</span>
               </h1>
-              <p className="text-xs text-slate-400 mt-0.5 truncate">
-                {data?.period ? (
-                  <>Tracking: {formatDate(data.period.start)}</>
-                ) : (
-                  <>Last {days === 1 ? 'day' : `${days} days`}</>
-                )}
+              <p className="text-xs text-slate-400 mt-0.5">
+                {getPeriodLabel()} • Live Tracking
               </p>
             </div>
           </div>
@@ -170,14 +163,14 @@ export default function Analytics() {
           <div className="flex items-center gap-2">
             <div className="flex flex-1 rounded-lg bg-white/5 p-0.5">
               {[
-                { label: 'Today', value: 1 },
-                { label: '7D', value: 7 },
-                { label: '30D', value: 30 },
+                { label: 'Today', value: 0 },
+                { label: 'Yesterday', value: 1 },
+                { label: '7 Days', value: 7 },
               ].map((option) => (
                 <button
                   key={option.value}
                   onClick={() => handleDaysChange(option.value)}
-                  className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                  className={`flex-1 px-2 sm:px-3 py-1.5 text-[10px] sm:text-xs font-medium rounded-md transition-all ${
                     days === option.value
                       ? 'bg-orange-500 text-white shadow-lg'
                       : 'text-slate-400 hover:text-white'

@@ -29,15 +29,42 @@ Deno.serve(async (req) => {
       } catch {}
     }
     
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - days);
+    // Calculate date range based on days parameter
+    // days=0 means today only, days=1 means yesterday only, days=7 means last 7 days
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    
+    let startDate: Date;
+    let endDate: Date = now;
+    
+    if (days === 0) {
+      // Today only
+      startDate = todayStart;
+    } else if (days === 1) {
+      // Yesterday only
+      const yesterdayStart = new Date(todayStart);
+      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+      startDate = yesterdayStart;
+      endDate = todayStart; // End at start of today
+    } else {
+      // Last N days
+      startDate = new Date(todayStart);
+      startDate.setDate(startDate.getDate() - days);
+    }
 
-    // Get all events in date range
-    const { data: events, error } = await supabase
+    // Build query with date range
+    let query = supabase
       .from('analytics_events')
       .select('*')
       .gte('created_at', startDate.toISOString())
       .order('created_at', { ascending: false });
+    
+    // Add end date filter for yesterday
+    if (days === 1) {
+      query = query.lt('created_at', endDate.toISOString());
+    }
+    
+    const { data: events, error } = await query;
 
     if (error) {
       console.error('Error fetching analytics:', error);
@@ -84,8 +111,9 @@ Deno.serve(async (req) => {
     const summary = {
       period: {
         start: startDate.toISOString(),
-        end: new Date().toISOString(),
+        end: endDate.toISOString(),
         days,
+        label: days === 0 ? 'Today' : days === 1 ? 'Yesterday' : `Last ${days} Days`,
       },
       totals: {
         events: events?.length || 0,
