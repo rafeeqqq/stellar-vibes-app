@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, TrendingUp, Users, MousePointerClick, Eye, RefreshCw } from 'lucide-react';
+import { ArrowLeft, TrendingUp, Users, MousePointerClick, Eye, RefreshCw, Activity, Star, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 interface AnalyticsSummary {
   period: { start: string; end: string; days: number };
@@ -22,18 +22,18 @@ interface AnalyticsSummary {
 }
 
 const SIGN_COLORS: Record<string, string> = {
-  aries: '#E85A4F',
-  taurus: '#4A7C59',
-  gemini: '#F4A261',
-  cancer: '#6B9AC4',
-  leo: '#E98A61',
-  virgo: '#7B9E89',
-  libra: '#D4A5A5',
-  scorpio: '#8B4A6B',
-  sagittarius: '#9B59B6',
-  capricorn: '#5D5D5D',
-  aquarius: '#00B4D8',
-  pisces: '#A78BFA',
+  aries: '#EF4444',
+  taurus: '#22C55E',
+  gemini: '#F59E0B',
+  cancer: '#3B82F6',
+  leo: '#F97316',
+  virgo: '#84CC16',
+  libra: '#EC4899',
+  scorpio: '#8B5CF6',
+  sagittarius: '#A855F7',
+  capricorn: '#6B7280',
+  aquarius: '#06B6D4',
+  pisces: '#8B5CF6',
 };
 
 const SIGN_NAMES: Record<string, string> = {
@@ -49,6 +49,14 @@ const SIGN_NAMES: Record<string, string> = {
   capricorn: 'Capricorn ♑',
   aquarius: 'Aquarius ♒',
   pisces: 'Pisces ♓',
+};
+
+const EVENT_ICONS: Record<string, string> = {
+  page_view: '👁️',
+  horoscope_loaded: '🔮',
+  sign_selected: '⭐',
+  day_changed: '📅',
+  cta_clicked: '🖱️',
 };
 
 export default function Analytics() {
@@ -97,45 +105,70 @@ export default function Analytics() {
   })) || [];
 
   const eventData = data?.event_breakdown 
-    ? Object.entries(data.event_breakdown).map(([name, count]) => ({
-        name: name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-        count,
-      }))
+    ? Object.entries(data.event_breakdown)
+        .map(([name, count]) => ({
+          name: name.replace(/_/g, ' '),
+          fullName: name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+          count,
+          icon: EVENT_ICONS[name] || '📊',
+        }))
+        .sort((a, b) => b.count - a.count)
     : [];
 
   const conversionRate = parseFloat(data?.totals.conversion_rate || '0');
+  const totalEvents = data?.totals.events || 0;
+
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 sm:p-6">
       {error && (
-        <div className="max-w-4xl mx-auto mb-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive text-sm">
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-6xl mx-auto mb-4 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm backdrop-blur-sm"
+        >
           {error}
-        </div>
+        </motion.div>
       )}
+      
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-4xl mx-auto space-y-6"
+        className="max-w-6xl mx-auto space-y-6"
       >
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+          <div className="flex items-center gap-4">
             <Link to="/">
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full bg-white/5 hover:bg-white/10 text-white">
                 <ArrowLeft className="w-5 h-5" />
               </Button>
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
-              <p className="text-sm text-muted-foreground">
-                Last {days === 1 ? 'day' : `${days} days`}
+              <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2">
+                <Activity className="w-7 h-7 text-orange-400" />
+                Analytics Dashboard
+              </h1>
+              <p className="text-sm text-slate-400 mt-1">
+                {data?.period ? (
+                  <>Tracking from {formatDate(data.period.start)} to {formatDate(data.period.end)}</>
+                ) : (
+                  <>Last {days === 1 ? 'day' : `${days} days`}</>
+                )}
               </p>
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
-            {/* Date Range Picker */}
-            <div className="flex rounded-lg border border-border overflow-hidden">
+          <div className="flex items-center gap-3">
+            <div className="flex rounded-xl bg-white/5 p-1 backdrop-blur-sm">
               {[
                 { label: 'Today', value: 1 },
                 { label: '7 Days', value: 7 },
@@ -144,10 +177,10 @@ export default function Analytics() {
                 <button
                   key={option.value}
                   onClick={() => handleDaysChange(option.value)}
-                  className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
                     days === option.value
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-background text-muted-foreground hover:bg-muted'
+                      ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25'
+                      : 'text-slate-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {option.label}
@@ -157,9 +190,10 @@ export default function Analytics() {
             
             <Button 
               variant="outline" 
-              size="sm" 
+              size="icon"
               onClick={() => fetchAnalytics(days)}
               disabled={loading}
+              className="rounded-xl bg-white/5 border-white/10 hover:bg-white/10 text-white"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </Button>
@@ -167,123 +201,170 @@ export default function Analytics() {
         </div>
 
         {/* Stat Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <StatCard
+            icon={<Activity className="w-5 h-5" />}
+            label="Total Events"
+            value={totalEvents}
+            color="from-blue-500 to-cyan-500"
+            loading={loading}
+          />
           <StatCard
             icon={<Users className="w-5 h-5" />}
-            label="Sessions"
+            label="Unique Sessions"
             value={data?.totals.unique_sessions || 0}
-            color="text-blue-500"
+            color="from-purple-500 to-pink-500"
             loading={loading}
           />
           <StatCard
             icon={<Eye className="w-5 h-5" />}
             label="Page Views"
             value={data?.totals.page_views || 0}
-            color="text-purple-500"
+            color="from-emerald-500 to-teal-500"
             loading={loading}
           />
           <StatCard
             icon={<MousePointerClick className="w-5 h-5" />}
             label="CTA Clicks"
             value={data?.totals.cta_clicks || 0}
-            color="text-green-500"
+            color="from-orange-500 to-amber-500"
             loading={loading}
           />
           <StatCard
             icon={<TrendingUp className="w-5 h-5" />}
-            label="Conversion"
+            label="Conversion Rate"
             value={`${conversionRate}%`}
-            color="text-orange-500"
+            color="from-rose-500 to-red-500"
             loading={loading}
             highlight={conversionRate > 5}
           />
         </div>
 
         {/* Charts Row */}
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* Popular Signs Pie Chart */}
-          <Card>
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* Popular Signs */}
+          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-semibold">Popular Signs</CardTitle>
+              <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-400" />
+                Popular Zodiac Signs
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="h-48 flex items-center justify-center">
-                  <div className="animate-pulse text-muted-foreground">Loading...</div>
+                <div className="h-64 flex items-center justify-center">
+                  <div className="animate-pulse text-slate-400">Loading...</div>
                 </div>
               ) : pieData.length > 0 ? (
-                <div className="h-48">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={pieData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={40}
-                        outerRadius={70}
-                        paddingAngle={2}
-                        dataKey="value"
-                      >
-                        {pieData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip formatter={(value: number) => [value, 'Count']} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="flex flex-wrap gap-2 justify-center mt-2">
-                    {pieData.slice(0, 5).map((item, i) => (
-                      <div key={i} className="flex items-center gap-1 text-xs">
-                        <div 
-                          className="w-2 h-2 rounded-full" 
-                          style={{ backgroundColor: item.color }} 
+                <div className="flex flex-col lg:flex-row items-center gap-4">
+                  <div className="w-full lg:w-1/2 h-56">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={pieData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={50}
+                          outerRadius={80}
+                          paddingAngle={3}
+                          dataKey="value"
+                          stroke="rgba(0,0,0,0.3)"
+                          strokeWidth={2}
+                        >
+                          {pieData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'rgba(15,23,42,0.95)', 
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            borderRadius: '12px',
+                            color: '#fff'
+                          }}
+                          formatter={(value: number) => [`${value} views`, 'Count']}
                         />
-                        <span className="text-muted-foreground">{item.name}</span>
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="w-full lg:w-1/2 space-y-2">
+                    {pieData.map((item, i) => (
+                      <div 
+                        key={i} 
+                        className="flex items-center justify-between p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div 
+                            className="w-3 h-3 rounded-full shadow-lg" 
+                            style={{ backgroundColor: item.color, boxShadow: `0 0 10px ${item.color}50` }} 
+                          />
+                          <span className="text-white text-sm font-medium">{item.name}</span>
+                        </div>
+                        <span className="text-slate-300 font-semibold">{item.value}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               ) : (
-                <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">
-                  No data yet
+                <div className="h-64 flex items-center justify-center text-slate-400 text-sm">
+                  No horoscope views recorded yet
                 </div>
               )}
             </CardContent>
           </Card>
 
-          {/* Events Bar Chart */}
-          <Card>
+          {/* Events Breakdown */}
+          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-semibold">Event Breakdown</CardTitle>
+              <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-blue-400" />
+                Event Breakdown
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="h-48 flex items-center justify-center">
-                  <div className="animate-pulse text-muted-foreground">Loading...</div>
+                <div className="h-64 flex items-center justify-center">
+                  <div className="animate-pulse text-slate-400">Loading...</div>
                 </div>
               ) : eventData.length > 0 ? (
-                <div className="h-48">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={eventData} layout="vertical">
-                      <XAxis type="number" hide />
-                      <YAxis 
-                        type="category" 
-                        dataKey="name" 
-                        width={100}
-                        tick={{ fontSize: 11 }}
-                      />
-                      <Tooltip formatter={(value: number) => [value, 'Events']} />
-                      <Bar 
-                        dataKey="count" 
-                        fill="hsl(var(--primary))" 
-                        radius={[0, 4, 4, 0]}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
+                <div className="space-y-3">
+                  {eventData.map((event, i) => {
+                    const percentage = totalEvents > 0 ? (event.count / totalEvents) * 100 : 0;
+                    return (
+                      <motion.div 
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        className="group"
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{event.icon}</span>
+                            <span className="text-white text-sm font-medium capitalize">{event.fullName}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-400 text-xs">{percentage.toFixed(1)}%</span>
+                            <span className="text-white font-semibold text-sm bg-white/10 px-2 py-0.5 rounded-full">
+                              {event.count}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${percentage}%` }}
+                            transition={{ duration: 0.8, delay: i * 0.1 }}
+                            className="h-full rounded-full bg-gradient-to-r from-orange-500 to-amber-400"
+                          />
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               ) : (
-                <div className="h-48 flex items-center justify-center text-muted-foreground text-sm">
-                  No data yet
+                <div className="h-64 flex items-center justify-center text-slate-400 text-sm">
+                  No events recorded yet
                 </div>
               )}
             </CardContent>
@@ -291,42 +372,67 @@ export default function Analytics() {
         </div>
 
         {/* Recent Events */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold">Recent Events</CardTitle>
+        <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg font-semibold text-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Activity className="w-5 h-5 text-green-400" />
+                Recent Activity
+              </div>
+              <span className="text-sm font-normal text-slate-400">
+                {data?.recent_events?.length || 0} events
+              </span>
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="space-y-2">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="h-10 bg-muted/50 rounded animate-pulse" />
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="h-12 bg-white/5 rounded-lg animate-pulse" />
                 ))}
               </div>
             ) : data?.recent_events && data.recent_events.length > 0 ? (
-              <div className="space-y-2 max-h-64 overflow-y-auto">
+              <div className="space-y-2 max-h-80 overflow-y-auto pr-2 scrollbar-hide">
                 {data.recent_events.map((event, i) => (
-                  <div 
-                    key={i} 
-                    className="flex items-center justify-between p-2 rounded-lg bg-muted/30 text-sm"
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.03 }}
+                    className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all group"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 bg-primary/10 text-primary rounded text-xs font-medium">
-                        {event.event.replace(/_/g, ' ')}
-                      </span>
-                      {event.data && Object.keys(event.data).length > 0 && (
-                        <span className="text-muted-foreground text-xs">
-                          {JSON.stringify(event.data).slice(0, 40)}...
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">{EVENT_ICONS[event.event] || '📊'}</span>
+                      <div>
+                        <span className="text-white text-sm font-medium capitalize">
+                          {event.event.replace(/_/g, ' ')}
                         </span>
-                      )}
+                        {event.data && Object.keys(event.data).length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {Object.entries(event.data).slice(0, 3).map(([key, value], idx) => (
+                              <span 
+                                key={idx} 
+                                className="px-2 py-0.5 bg-white/10 rounded-full text-xs text-slate-300"
+                              >
+                                {key}: {String(value).slice(0, 20)}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(event.time).toLocaleTimeString()}
+                    <span className="text-xs text-slate-500 group-hover:text-slate-400 transition-colors whitespace-nowrap">
+                      {new Date(event.time).toLocaleTimeString('en-US', { 
+                        hour: '2-digit', 
+                        minute: '2-digit',
+                        second: '2-digit'
+                      })}
                     </span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             ) : (
-              <div className="h-20 flex items-center justify-center text-muted-foreground text-sm">
+              <div className="h-24 flex items-center justify-center text-slate-400 text-sm">
                 No events recorded yet
               </div>
             )}
@@ -348,16 +454,30 @@ interface StatCardProps {
 
 function StatCard({ icon, label, value, color, loading, highlight }: StatCardProps) {
   return (
-    <Card className={highlight ? 'ring-2 ring-primary/50' : ''}>
-      <CardContent className="p-3 sm:p-4">
-        <div className={`${color} mb-2`}>{icon}</div>
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      className={`relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-4 ${
+        highlight ? 'ring-2 ring-orange-500/50' : ''
+      }`}
+    >
+      <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${color}`} />
+      <div className="relative">
+        <div className={`inline-flex p-2 rounded-xl bg-gradient-to-br ${color} text-white mb-3`}>
+          {icon}
+        </div>
         {loading ? (
-          <div className="h-8 w-16 bg-muted rounded animate-pulse" />
+          <div className="h-8 w-20 bg-white/10 rounded animate-pulse" />
         ) : (
-          <div className="text-xl sm:text-2xl font-bold text-foreground">{value}</div>
+          <motion.div 
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-2xl sm:text-3xl font-bold text-white"
+          >
+            {value}
+          </motion.div>
         )}
-        <div className="text-xs text-muted-foreground">{label}</div>
-      </CardContent>
-    </Card>
+        <div className="text-xs text-slate-400 mt-1">{label}</div>
+      </div>
+    </motion.div>
   );
 }
