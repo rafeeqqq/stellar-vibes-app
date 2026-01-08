@@ -65,16 +65,26 @@ export default function Analytics() {
     setLoading(true);
     try {
       console.log('Fetching analytics for days:', daysToFetch);
-      const { data: result, error } = await supabase.functions.invoke('analytics-summary', {
-        body: { days: daysToFetch },
-      });
       
-      console.log('Analytics response:', result, 'Error:', error);
+      const response = await fetch(
+        `https://qykugdnyqwywzojmifsx.supabase.co/functions/v1/analytics-summary`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          },
+          body: JSON.stringify({ days: daysToFetch }),
+        }
+      );
       
-      if (error) {
-        console.error('Supabase function error:', error);
-        throw error;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      
+      const result = await response.json();
+      console.log('Analytics response:', result);
       
       if (result) {
         setData(result);
