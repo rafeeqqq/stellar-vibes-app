@@ -59,38 +59,29 @@ const SIGN_NAMES: Record<string, string> = {
 export default function Analytics() {
   const [data, setData] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [days, setDays] = useState(7);
 
   const fetchAnalytics = async (daysToFetch: number) => {
     setLoading(true);
+    setError(null);
     try {
-      console.log('Fetching analytics for days:', daysToFetch);
+      const { data: result, error: fnError } = await supabase.functions.invoke('analytics-summary', {
+        body: { days: daysToFetch },
+      });
       
-      const response = await fetch(
-        `https://qykugdnyqwywzojmifsx.supabase.co/functions/v1/analytics-summary`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-            'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          },
-          body: JSON.stringify({ days: daysToFetch }),
-        }
-      );
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (fnError) {
+        console.error('Function error:', fnError);
+        setError(fnError.message || 'Failed to load analytics');
+        return;
       }
-      
-      const result = await response.json();
-      console.log('Analytics response:', result);
       
       if (result) {
         setData(result);
       }
-    } catch (error) {
-      console.error('Failed to fetch analytics:', error);
+    } catch (err) {
+      console.error('Failed to fetch analytics:', err);
+      setError('Failed to load analytics data');
     } finally {
       setLoading(false);
     }
@@ -121,6 +112,11 @@ export default function Analytics() {
 
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6">
+      {error && (
+        <div className="max-w-4xl mx-auto mb-4 p-4 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive text-sm">
+          {error}
+        </div>
+      )}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
