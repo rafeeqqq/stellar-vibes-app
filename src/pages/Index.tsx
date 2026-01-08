@@ -73,7 +73,7 @@ const Index = () => {
           </div>
         </div>
         <p className="text-muted-foreground text-xs sm:text-sm">
-          आपका दैनिक राशिफल
+          Your Daily Horoscope
         </p>
       </motion.header>
 
