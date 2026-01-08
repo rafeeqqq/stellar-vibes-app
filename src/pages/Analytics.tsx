@@ -61,11 +61,10 @@ export default function Analytics() {
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState(7);
 
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = async (daysToFetch: number) => {
     setLoading(true);
     try {
-      const { data: result, error } = await supabase.functions.invoke('analytics-summary', {
-        body: {},
+      const { data: result, error } = await supabase.functions.invoke(`analytics-summary?days=${daysToFetch}`, {
         method: 'GET',
       });
       
@@ -79,8 +78,12 @@ export default function Analytics() {
   };
 
   useEffect(() => {
-    fetchAnalytics();
+    fetchAnalytics(days);
   }, [days]);
+
+  const handleDaysChange = (newDays: number) => {
+    setDays(newDays);
+  };
 
   const pieData = data?.popular_signs.map(item => ({
     name: SIGN_NAMES[item.sign] || item.sign,
@@ -105,7 +108,7 @@ export default function Analytics() {
         className="max-w-4xl mx-auto space-y-6"
       >
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Link to="/">
               <Button variant="ghost" size="icon" className="rounded-full">
@@ -115,19 +118,42 @@ export default function Analytics() {
             <div>
               <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
               <p className="text-sm text-muted-foreground">
-                Last {data?.period.days || 7} days
+                Last {days === 1 ? 'day' : `${days} days`}
               </p>
             </div>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={fetchAnalytics}
-            disabled={loading}
-          >
-            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
+          
+          <div className="flex items-center gap-2">
+            {/* Date Range Picker */}
+            <div className="flex rounded-lg border border-border overflow-hidden">
+              {[
+                { label: 'Today', value: 1 },
+                { label: '7 Days', value: 7 },
+                { label: '30 Days', value: 30 },
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => handleDaysChange(option.value)}
+                  className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                    days === option.value
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-background text-muted-foreground hover:bg-muted'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => fetchAnalytics(days)}
+              disabled={loading}
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
         </div>
 
         {/* Stat Cards */}
