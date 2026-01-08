@@ -64,12 +64,21 @@ export default function Analytics() {
   const fetchAnalytics = async (daysToFetch: number) => {
     setLoading(true);
     try {
+      console.log('Fetching analytics for days:', daysToFetch);
       const { data: result, error } = await supabase.functions.invoke('analytics-summary', {
         body: { days: daysToFetch },
       });
       
-      if (error) throw error;
-      setData(result);
+      console.log('Analytics response:', result, 'Error:', error);
+      
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+      
+      if (result) {
+        setData(result);
+      }
     } catch (error) {
       console.error('Failed to fetch analytics:', error);
     } finally {
