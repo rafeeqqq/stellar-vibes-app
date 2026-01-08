@@ -59,8 +59,8 @@ Deno.serve(async (req) => {
         uniqueSessions.add(event.session_id);
       }
 
-      // Count sign selections
-      if (event.event_name === 'sign_selected' && event.event_data?.sign_id) {
+      // Count signs from horoscope views (more meaningful than just sign_selected)
+      if (event.event_name === 'horoscope_loaded' && event.event_data?.sign_id) {
         const signId = event.event_data.sign_id as string;
         signCounts[signId] = (signCounts[signId] || 0) + 1;
       }
@@ -107,6 +107,7 @@ Deno.serve(async (req) => {
       days,
       totalEvents: events?.length,
       uniqueSessions: uniqueSessions.size,
+      popularSignsCount: popularSigns.length,
     });
 
     return new Response(JSON.stringify(summary), {
