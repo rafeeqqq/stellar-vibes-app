@@ -5,12 +5,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 
 interface AnalyticsSummary {
   period: { start: string; end: string; days: number };
@@ -233,7 +228,7 @@ export default function Analytics() {
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
-                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Tooltip formatter={(value: number) => [value, 'Count']} />
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="flex flex-wrap gap-2 justify-center mt-2">
@@ -277,7 +272,7 @@ export default function Analytics() {
                         width={100}
                         tick={{ fontSize: 11 }}
                       />
-                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Tooltip formatter={(value: number) => [value, 'Events']} />
                       <Bar 
                         dataKey="count" 
                         fill="hsl(var(--primary))" 
