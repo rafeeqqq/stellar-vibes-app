@@ -1,8 +1,12 @@
 import { motion } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 export function ActionButtons() {
+  const { trackCtaClicked } = useAnalytics();
+
   const handleTalkToAstrologer = () => {
+    trackCtaClicked('talk_to_astrologer');
     window.location.href = 'astrolokal://HomeScreen';
   };
 

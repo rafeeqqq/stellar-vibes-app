@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignPicker } from '@/components/horoscope/SignPicker';
 import { DayTabs } from '@/components/horoscope/DayTabs';
@@ -10,6 +10,7 @@ import { ActionButtons } from '@/components/horoscope/ActionButtons';
 import { StarField } from '@/components/horoscope/StarField';
 import { zodiacSigns } from '@/lib/horoscopeData';
 import { useAIHoroscope } from '@/hooks/useAIHoroscope';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import astrolokalLogo from '@/assets/astrolokal-logo.png';
 
 const formatDate = (offset: number) => {
@@ -25,12 +26,30 @@ const formatDate = (offset: number) => {
 const Index = () => {
   const [selectedSign, setSelectedSign] = useState('leo');
   const [activeDay, setActiveDay] = useState<'yesterday' | 'today' | 'tomorrow'>('today');
+  const { trackSignSelected, trackDayChanged, trackHoroscopeLoaded } = useAnalytics();
 
   const dayOffset = activeDay === 'yesterday' ? -1 : activeDay === 'tomorrow' ? 1 : 0;
   const sign = zodiacSigns.find(s => s.id === selectedSign) || zodiacSigns[0];
   const { horoscope, isLoading, isAIPowered } = useAIHoroscope(sign, dayOffset);
 
   const currentDate = useMemo(() => formatDate(dayOffset), [dayOffset]);
+
+  // Track horoscope load
+  useEffect(() => {
+    if (!isLoading && horoscope) {
+      trackHoroscopeLoaded(selectedSign, isAIPowered);
+    }
+  }, [isLoading, selectedSign, isAIPowered]);
+
+  const handleSignChange = (signId: string) => {
+    setSelectedSign(signId);
+    trackSignSelected(signId);
+  };
+
+  const handleDayChange = (day: 'yesterday' | 'today' | 'tomorrow') => {
+    setActiveDay(day);
+    trackDayChanged(day);
+  };
 
   return (
     <div className="min-h-screen pb-32 sm:pb-28 relative overflow-x-hidden">
@@ -61,12 +80,12 @@ const Index = () => {
       {/* Sign Picker */}
       <SignPicker 
         selectedSign={selectedSign} 
-        onSelectSign={setSelectedSign} 
+        onSelectSign={handleSignChange} 
       />
 
       {/* Day Tabs with Date Display */}
       <div className="mb-4 sm:mb-5">
-        <DayTabs activeDay={activeDay} onDayChange={setActiveDay} />
+        <DayTabs activeDay={activeDay} onDayChange={handleDayChange} />
         <motion.p 
           key={currentDate}
           className="text-center text-muted-foreground text-[10px] sm:text-xs mt-2"
