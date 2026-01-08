@@ -214,14 +214,14 @@ const remedies = [
 ];
 
 const mantras = [
-  "ॐ सूर्याय नमः (Om Suryaya Namah)",
-  "ॐ चंद्राय नमः (Om Chandraya Namah)",
-  "ॐ गणेशाय नमः (Om Ganeshaya Namah)",
-  "ॐ नमः शिवाय (Om Namah Shivaya)",
-  "ॐ श्री महालक्ष्म्यै नमः (Om Shri Mahalakshmyai Namah)",
-  "ॐ हनुमते नमः (Om Hanumate Namah)",
-  "ॐ शांति ॐ (Om Shanti Om)",
-  "ॐ भूर्भुवः स्वः (Om Bhur Bhuvah Svah)",
+  "Om Suryaya Namah - Salutations to the Sun",
+  "Om Chandraya Namah - Salutations to the Moon",
+  "Om Ganeshaya Namah - Salutations to Lord Ganesha",
+  "Om Namah Shivaya - Salutations to Lord Shiva",
+  "Om Shri Mahalakshmyai Namah - Salutations to Goddess Lakshmi",
+  "Om Hanumate Namah - Salutations to Lord Hanuman",
+  "Om Shanti Om - Peace Mantra",
+  "Om Bhur Bhuvah Svah - Gayatri Mantra",
 ];
 
 // Compatibility mapping based on elements
