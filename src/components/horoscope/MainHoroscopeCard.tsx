@@ -36,10 +36,10 @@ export function MainHoroscopeCard({ sign, horoscope }: MainHoroscopeCardProps) {
           {/* Sign Details - Left */}
           <div className="flex-1">
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-primary">
-              {sign.hindiName} राशि
+              {sign.name}
             </h2>
             <p className="text-sm sm:text-base text-primary/70 font-medium">
-              {sign.name}
+              {sign.element} Sign
             </p>
             <p className="text-xs text-muted-foreground mt-0.5">{sign.dateRange}</p>
           </div>

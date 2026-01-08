@@ -120,7 +120,7 @@ export function DailyReadingCard({
         <div className="rounded-xl p-3 bg-amber-500/10 border border-amber-500/20">
           <div className="flex items-center gap-1.5 mb-1">
             <Clock className="w-4 h-4 text-amber-600" />
-            <span className="text-xs sm:text-sm font-semibold text-amber-700">Shubh Muhurat</span>
+            <span className="text-xs sm:text-sm font-semibold text-amber-700">Auspicious Time</span>
           </div>
           <p className="text-xs sm:text-sm text-foreground/80 font-medium">{shubhMuhurat}</p>
         </div>

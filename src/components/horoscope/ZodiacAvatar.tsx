@@ -113,13 +113,6 @@ export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
         >
           {sign.name}
         </span>
-        <span 
-          className={`text-[9px] sm:text-[10px] font-hindi transition-colors duration-300 ${
-            isSelected ? 'text-primary/70' : 'text-muted-foreground/70'
-          }`}
-        >
-          {sign.hindiName}
-        </span>
       </div>
     </motion.button>
   );

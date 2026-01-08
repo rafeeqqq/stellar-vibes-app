@@ -18,8 +18,7 @@ export function PanchangCard({ sign, nakshatra, tithi }: PanchangCardProps) {
     >
       <h3 className="font-serif text-lg sm:text-xl font-semibold text-gradient mb-3 sm:mb-4 flex items-center gap-2">
         <Calendar className="w-5 h-5 text-primary" />
-        <span>Today's Panchang</span>
-        <span className="font-hindi text-base ml-1 text-primary/70">पंचांग</span>
+        <span>Today's Cosmic Calendar</span>
       </h3>
       
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
@@ -52,8 +51,8 @@ export function PanchangCard({ sign, nakshatra, tithi }: PanchangCardProps) {
           whileTap={{ scale: 0.98 }}
         >
           <span className="text-xl sm:text-2xl mb-1 block">{sign.planetSymbol}</span>
-          <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide">Graha</p>
-          <p className="text-xs sm:text-sm font-medium text-foreground mt-0.5 font-hindi">{sign.rulingPlanetHindi}</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide">Ruler</p>
+          <p className="text-xs sm:text-sm font-medium text-foreground mt-0.5">{sign.rulingPlanet}</p>
         </motion.div>
       </div>
     </motion.div>
