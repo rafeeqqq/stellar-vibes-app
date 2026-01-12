@@ -70,32 +70,34 @@ export function SignPicker({ selectedSign, onSelectSign }: SignPickerProps) {
 
   return (
     <div className="w-full relative">
+      {/* Left fade gradient */}
+      <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+      
+      {/* Right fade gradient */}
+      <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
       {/* Left Navigation Button */}
       <motion.button
         onClick={navigateToPrevSign}
-        className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/95 shadow-md border border-border flex items-center justify-center touch-manipulation active:scale-95 transition-transform"
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/90 shadow-lg border-2 border-primary-foreground/20 flex items-center justify-center touch-manipulation active:scale-95 transition-all hover:bg-primary"
         whileTap={{ scale: 0.9 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: canScrollLeft ? 1 : 0.5 }}
       >
-        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+        <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" />
       </motion.button>
 
       {/* Right Navigation Button */}
       <motion.button
         onClick={navigateToNextSign}
-        className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/95 shadow-md border border-border flex items-center justify-center touch-manipulation active:scale-95 transition-transform"
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/90 shadow-lg border-2 border-primary-foreground/20 flex items-center justify-center touch-manipulation active:scale-95 transition-all hover:bg-primary"
         whileTap={{ scale: 0.9 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: canScrollRight ? 1 : 0.5 }}
       >
-        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+        <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" />
       </motion.button>
 
       {/* Scrollable Sign List */}
       <motion.div
         ref={scrollRef}
-        className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide py-3 sm:py-4 px-10 sm:px-14 snap-x snap-mandatory"
+        className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide py-4 sm:py-5 px-16 sm:px-20 snap-x snap-mandatory"
         style={{ WebkitOverflowScrolling: 'touch' }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

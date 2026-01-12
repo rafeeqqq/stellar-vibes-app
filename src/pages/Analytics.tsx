@@ -99,8 +99,7 @@ export default function Analytics() {
 
   const getPeriodLabel = () => {
     if (days === 0) return "Today";
-    if (days === 1) return "Yesterday";
-    return "7 Days";
+    return "Lifetime";
   };
 
   return (
@@ -145,8 +144,7 @@ export default function Analytics() {
         <div className="flex gap-2 mt-4">
           {[
             { label: 'Today', value: 0 },
-            { label: 'Yesterday', value: 1 },
-            { label: '7 Days', value: 7 },
+            { label: 'Lifetime', value: -1 },
           ].map((option) => (
             <button
               key={option.value}

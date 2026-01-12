@@ -30,38 +30,35 @@ Deno.serve(async (req) => {
     }
     
     // Calculate date range based on days parameter
-    // days=0 means today only, days=1 means yesterday only, days=7 means last 7 days
+    // days=0 means today only, days=-1 means lifetime (all data)
     const now = new Date();
     const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     
-    let startDate: Date;
+    let startDate: Date | null = null;
     let endDate: Date = now;
+    let isLifetime = false;
     
     if (days === 0) {
       // Today only
       startDate = todayStart;
-    } else if (days === 1) {
-      // Yesterday only
-      const yesterdayStart = new Date(todayStart);
-      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
-      startDate = yesterdayStart;
-      endDate = todayStart; // End at start of today
+    } else if (days < 0) {
+      // Lifetime - no date filter
+      isLifetime = true;
     } else {
       // Last N days
       startDate = new Date(todayStart);
       startDate.setDate(startDate.getDate() - days);
     }
 
-    // Build query with date range
+    // Build query - with or without date filter
     let query = supabase
       .from('analytics_events')
       .select('*')
-      .gte('created_at', startDate.toISOString())
       .order('created_at', { ascending: false });
     
-    // Add end date filter for yesterday
-    if (days === 1) {
-      query = query.lt('created_at', endDate.toISOString());
+    // Only add date filter if not lifetime
+    if (!isLifetime && startDate) {
+      query = query.gte('created_at', startDate.toISOString());
     }
     
     const { data: events, error } = await query;
@@ -110,10 +107,10 @@ Deno.serve(async (req) => {
 
     const summary = {
       period: {
-        start: startDate.toISOString(),
+        start: isLifetime ? null : startDate?.toISOString(),
         end: endDate.toISOString(),
         days,
-        label: days === 0 ? 'Today' : days === 1 ? 'Yesterday' : `Last ${days} Days`,
+        label: days === 0 ? 'Today' : isLifetime ? 'Lifetime' : `Last ${days} Days`,
       },
       totals: {
         events: events?.length || 0,
