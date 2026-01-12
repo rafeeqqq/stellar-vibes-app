@@ -54,9 +54,10 @@ export default function Analytics() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [days, setDays] = useState(0);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  const fetchAnalytics = async (daysToFetch: number) => {
-    setLoading(true);
+  const fetchAnalytics = async (daysToFetch: number, showLoading = true) => {
+    if (showLoading) setLoading(true);
     setError(null);
     try {
       const { data: result, error: fnError } = await supabase.functions.invoke('analytics-summary', {
@@ -71,6 +72,7 @@ export default function Analytics() {
       
       if (result) {
         setData(result);
+        setLastUpdated(new Date());
       }
     } catch (err) {
       console.error('Failed to fetch analytics:', err);
@@ -80,8 +82,15 @@ export default function Analytics() {
     }
   };
 
+  // Initial fetch + auto-refresh every 30 seconds
   useEffect(() => {
     fetchAnalytics(days);
+    
+    const interval = setInterval(() => {
+      fetchAnalytics(days, false); // Silent refresh (no loading spinner)
+    }, 30000); // 30 seconds
+    
+    return () => clearInterval(interval);
   }, [days]);
 
   const handleDaysChange = (newDays: number) => {
@@ -127,7 +136,7 @@ export default function Analytics() {
               Cosmic Insights
             </h1>
             <p className="text-xs text-muted-foreground">
-              {getPeriodLabel()} • Live
+              {getPeriodLabel()} • {lastUpdated ? `Updated ${lastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}` : 'Loading...'}
             </p>
           </div>
           <motion.button 
