@@ -34,11 +34,47 @@ interface ZodiacAvatarProps {
   sign: ZodiacSign;
   isSelected: boolean;
   onClick: () => void;
+  isMain?: boolean;
+  isThumb?: boolean;
 }
 
-export function ZodiacAvatar({ sign, isSelected, onClick }: ZodiacAvatarProps) {
+export function ZodiacAvatar({ sign, isSelected, onClick, isMain, isThumb }: ZodiacAvatarProps) {
   const image = zodiacImages[sign.id];
 
+  // Main large display (center of navigation)
+  if (isMain) {
+    return (
+      <motion.div
+        className="w-full h-full flex items-center justify-center"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <img 
+          src={image} 
+          alt={sign.name}
+          className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover"
+        />
+      </motion.div>
+    );
+  }
+
+  // Thumbnail in scroll strip
+  if (isThumb) {
+    return (
+      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden ${
+        isSelected ? 'ring-2 ring-primary' : 'ring-1 ring-border'
+      }`}>
+        <img 
+          src={image} 
+          alt={sign.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
+
+  // Default (legacy support)
   return (
     <motion.button
       onClick={onClick}
