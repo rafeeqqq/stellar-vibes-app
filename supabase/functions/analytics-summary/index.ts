@@ -51,17 +51,48 @@ Deno.serve(async (req) => {
     }
 
     // Build query - with or without date filter
-    let query = supabase
-      .from('analytics_events')
-      .select('*')
-      .order('created_at', { ascending: false });
+    // For lifetime, we need to paginate to get ALL events (Supabase default limit is 1000)
+    let allEvents: any[] = [];
+    const pageSize = 1000;
+    let page = 0;
+    let hasMore = true;
     
-    // Only add date filter if not lifetime
-    if (!isLifetime && startDate) {
-      query = query.gte('created_at', startDate.toISOString());
+    while (hasMore) {
+      let query = supabase
+        .from('analytics_events')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .range(page * pageSize, (page + 1) * pageSize - 1);
+      
+      // Only add date filter if not lifetime
+      if (!isLifetime && startDate) {
+        query = query.gte('created_at', startDate.toISOString());
+      }
+      
+      const { data: pageEvents, error: pageError } = await query;
+      
+      if (pageError) {
+        console.error('Error fetching analytics page:', pageError);
+        throw pageError;
+      }
+      
+      if (pageEvents && pageEvents.length > 0) {
+        allEvents = allEvents.concat(pageEvents);
+        hasMore = pageEvents.length === pageSize;
+        page++;
+      } else {
+        hasMore = false;
+      }
+      
+      // Safety limit: max 50 pages (50,000 events)
+      if (page >= 50) {
+        console.log('Reached max pagination limit');
+        hasMore = false;
+      }
     }
     
-    const { data: events, error } = await query;
+    const events = allEvents;
+    const error = null;
 
     if (error) {
       console.error('Error fetching analytics:', error);
