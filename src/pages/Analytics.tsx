@@ -350,22 +350,16 @@ interface StatCardProps {
   isText?: boolean;
 }
 
-function StatCard({ label, value, icon, loading, isText }: StatCardProps) {
-  return (
-    <motion.div 
-      className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-card"
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: 'spring', stiffness: 300 }}
-    >
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xl">{icon}</span>
-      </div>
-      {loading ? (
-        <div className="h-7 w-16 bg-muted/50 rounded-lg animate-pulse" />
-      ) : (
-        <p className={`font-serif text-foreground ${isText ? 'text-xl' : 'text-2xl'}`}>{value}</p>
-      )}
-      <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
-    </motion.div>
-  );
-}
+const StatCard = ({ label, value, icon, loading, isText }: StatCardProps) => (
+  <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-card hover:scale-[1.02] transition-transform">
+    <div className="flex items-center justify-between mb-2">
+      <span className="text-xl">{icon}</span>
+    </div>
+    {loading ? (
+      <div className="h-7 w-16 bg-muted/50 rounded-lg animate-pulse" />
+    ) : (
+      <p className={`font-serif text-foreground ${isText ? 'text-xl' : 'text-2xl'}`}>{value}</p>
+    )}
+    <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
+  </div>
+);
