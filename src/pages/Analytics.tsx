@@ -12,6 +12,9 @@ interface AnalyticsSummary {
     unique_sessions: number;
     page_views: number;
     cta_clicks: number;
+    talk_to_astrologer_clicks: number;
+    avg_session_time: string;
+    avg_session_time_seconds: number;
     conversion_rate: string;
   };
   event_breakdown: Record<string, number>;
@@ -104,8 +107,6 @@ export default function Analytics() {
     color: SIGN_COLORS[item.sign] || '#888',
   })) || [];
 
-  const totalEvents = data?.totals.events || 0;
-
   const getPeriodLabel = () => {
     if (days === 0) return "Today";
     return "Lifetime";
@@ -189,27 +190,28 @@ export default function Analytics() {
           transition={{ delay: 0.1 }}
         >
           <StatCard
-            label="Visitors"
-            value={data?.totals.unique_sessions || 0}
+            label="Page Views"
+            value={data?.totals.page_views || 0}
             icon="👁️"
             loading={loading}
           />
           <StatCard
-            label="Views"
-            value={data?.totals.page_views || 0}
-            icon="✨"
+            label="Visitors"
+            value={data?.totals.unique_sessions || 0}
+            icon="👤"
             loading={loading}
           />
           <StatCard
-            label="Interactions"
-            value={totalEvents}
-            icon="🔮"
+            label="Avg Session"
+            value={data?.totals.avg_session_time || '0s'}
+            icon="⏱️"
             loading={loading}
+            isText
           />
           <StatCard
-            label="Clicks"
-            value={data?.totals.cta_clicks || 0}
-            icon="⚡"
+            label="Talk to Astrologer"
+            value={data?.totals.talk_to_astrologer_clicks || 0}
+            icon="📞"
             loading={loading}
           />
         </motion.div>
@@ -342,12 +344,13 @@ export default function Analytics() {
 
 interface StatCardProps {
   label: string;
-  value: number;
+  value: number | string;
   icon: string;
   loading?: boolean;
+  isText?: boolean;
 }
 
-function StatCard({ label, value, icon, loading }: StatCardProps) {
+function StatCard({ label, value, icon, loading, isText }: StatCardProps) {
   return (
     <motion.div 
       className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border/50 shadow-card"
@@ -360,7 +363,7 @@ function StatCard({ label, value, icon, loading }: StatCardProps) {
       {loading ? (
         <div className="h-7 w-16 bg-muted/50 rounded-lg animate-pulse" />
       ) : (
-        <p className="text-2xl font-serif text-foreground">{value}</p>
+        <p className={`font-serif text-foreground ${isText ? 'text-xl' : 'text-2xl'}`}>{value}</p>
       )}
       <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
     </motion.div>
