@@ -4,7 +4,7 @@ import { ArrowLeft, RefreshCw, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { StarField } from '@/components/horoscope/StarField';
-
+import { ConversionFunnel } from '@/components/analytics/ConversionFunnel';
 interface AnalyticsSummary {
   period: { start: string; end: string; days: number };
   totals: {
@@ -215,6 +215,14 @@ export default function Analytics() {
             loading={loading}
           />
         </motion.div>
+
+        {/* Conversion Funnel */}
+        <ConversionFunnel
+          pageViews={data?.totals.page_views || 0}
+          signSelections={data?.event_breakdown?.sign_selected || 0}
+          astrologerClicks={data?.totals.talk_to_astrologer_clicks || 0}
+          loading={loading}
+        />
 
         {/* Popular Signs */}
         <motion.div 
