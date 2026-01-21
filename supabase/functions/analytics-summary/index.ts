@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
     if (req.method === 'POST') {
       try {
         const body = await req.json();
-        if (body.days) days = parseInt(body.days);
+        if (body.days !== undefined) days = parseInt(body.days);
       } catch {}
     }
     
@@ -84,34 +84,40 @@ Deno.serve(async (req) => {
         hasMore = false;
       }
       
-      // Safety limit: max 50 pages (50,000 events)
-      if (page >= 50) {
+      // Safety limit: max 100 pages (100,000 events)
+      if (page >= 100) {
         console.log('Reached max pagination limit');
         hasMore = false;
       }
     }
     
     const events = allEvents;
-    const error = null;
-
-    if (error) {
-      console.error('Error fetching analytics:', error);
-      throw error;
-    }
 
     // Calculate metrics
     const eventCounts: Record<string, number> = {};
     const signCounts: Record<string, number> = {};
     const uniqueSessions = new Set<string>();
     let ctaClicks = 0;
+    let talkToAstrologerClicks = 0;
+
+    // Track session times for avg session calculation
+    const sessionTimes: Record<string, { first: number; last: number }> = {};
 
     events?.forEach((event) => {
       // Count events by type
       eventCounts[event.event_name] = (eventCounts[event.event_name] || 0) + 1;
       
-      // Track unique sessions
+      // Track unique sessions and session times
       if (event.session_id) {
         uniqueSessions.add(event.session_id);
+        
+        const eventTime = new Date(event.created_at).getTime();
+        if (!sessionTimes[event.session_id]) {
+          sessionTimes[event.session_id] = { first: eventTime, last: eventTime };
+        } else {
+          sessionTimes[event.session_id].first = Math.min(sessionTimes[event.session_id].first, eventTime);
+          sessionTimes[event.session_id].last = Math.max(sessionTimes[event.session_id].last, eventTime);
+        }
       }
 
       // Count signs from horoscope views (more meaningful than just sign_selected)
@@ -123,12 +129,41 @@ Deno.serve(async (req) => {
       // Count CTA clicks
       if (event.event_name === 'cta_clicked') {
         ctaClicks++;
+        // Count Talk to Astrologer specifically
+        if (event.event_data?.cta_name === 'talk_to_astrologer') {
+          talkToAstrologerClicks++;
+        }
       }
     });
 
+    // Calculate average session time
+    const sessionDurations: number[] = [];
+    Object.values(sessionTimes).forEach(({ first, last }) => {
+      const duration = last - first;
+      // Only count sessions with at least some duration (more than 1 second)
+      if (duration >= 1000) {
+        sessionDurations.push(duration);
+      }
+    });
+    
+    const avgSessionTimeMs = sessionDurations.length > 0 
+      ? sessionDurations.reduce((a, b) => a + b, 0) / sessionDurations.length 
+      : 0;
+    
+    // Format avg session time as "Xm Ys" or "Xs"
+    const avgSessionSeconds = Math.round(avgSessionTimeMs / 1000);
+    let avgSessionTimeFormatted = '0s';
+    if (avgSessionSeconds >= 60) {
+      const mins = Math.floor(avgSessionSeconds / 60);
+      const secs = avgSessionSeconds % 60;
+      avgSessionTimeFormatted = secs > 0 ? `${mins}m ${secs}s` : `${mins}m`;
+    } else if (avgSessionSeconds > 0) {
+      avgSessionTimeFormatted = `${avgSessionSeconds}s`;
+    }
+
     const totalPageViews = eventCounts['page_view'] || 0;
     const conversionRate = totalPageViews > 0 
-      ? ((ctaClicks / totalPageViews) * 100).toFixed(2) 
+      ? ((talkToAstrologerClicks / totalPageViews) * 100).toFixed(2) 
       : '0.00';
 
     // Sort signs by popularity
@@ -148,10 +183,13 @@ Deno.serve(async (req) => {
         unique_sessions: uniqueSessions.size,
         page_views: totalPageViews,
         cta_clicks: ctaClicks,
+        talk_to_astrologer_clicks: talkToAstrologerClicks,
+        avg_session_time: avgSessionTimeFormatted,
+        avg_session_time_seconds: avgSessionSeconds,
         conversion_rate: `${conversionRate}%`,
       },
       event_breakdown: eventCounts,
-      popular_signs: popularSigns.slice(0, 5),
+      popular_signs: popularSigns.slice(0, 12),
       recent_events: events?.slice(0, 20).map(e => ({
         event: e.event_name,
         data: e.event_data,
@@ -163,6 +201,8 @@ Deno.serve(async (req) => {
       days,
       totalEvents: events?.length,
       uniqueSessions: uniqueSessions.size,
+      talkToAstrologerClicks,
+      avgSessionTime: avgSessionTimeFormatted,
       popularSignsCount: popularSigns.length,
     });
 
